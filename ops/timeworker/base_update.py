@@ -15,6 +15,18 @@ import openpyxl
 
 files_list = {'notes':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\Служебные записки.xlsx'}
 
+class Unit:
+    def __init__(self, fid, shipment_from, shipment_to, product, counterparty, order_number, amount, sz):
+        """Constructor for Unit"""
+        self.fid = fid # id
+        self.shipment_from = shipment_from # Отгрузка от
+        self.shipment_to = shipment_to # Отгрузка до
+        self.product = product # продукция
+        self.counterparty = counterparty # контрагент
+        self.order_number = order_number # № Заказа
+        self.amount = amount # Кол-во
+        self.sz = sz # № СЗ
+
 def append_notes(fpath):
     try:
         work_wb = openpyxl.load_workbook(filename=fpath)
@@ -22,9 +34,19 @@ def append_notes(fpath):
         print('trabl')
         exit(0)
     sheet = work_wb['Просчет']
-    for row in range(3, sheet.max_row+1):
+    for row in range(2, sheet.max_row):#sheet.max_row+1):
         print(sheet.cell(row=row, column=8).value)
-        detail = StandartDetailCreator(name=sheet.cell(row=row, column=8).value)
+        unit = Unit(
+            sheet.cell(row=row, column=2).value,
+            sheet.cell(row=row, column=4).value,
+            sheet.cell(row=row, column=5).value,
+            sheet.cell(row=row, column=8).value,
+            sheet.cell(row=row, column=9).value,
+            sheet.cell(row=row, column=10).value,
+            sheet.cell(row=row, column=11).value,
+            sheet.cell(row=row, column=12).value,
+            )
+        detail = StandartDetailCreator(fid = unit.fid, shipment_from = unit.shipment_from, shipment_to = unit.shipment_to, product = unit.product, counterparty = unit.counterparty, order_number = unit.order_number, amount = unit.amount, sz = unit.sz)
         detail.save()
 
 def append_base(flist):

@@ -11,6 +11,7 @@ from random import randint
 #     Из Служебных записок
 #     Из Плана производства
 #     Из Графика Количества
+
 def delete_base():
     zz = StandartDetailCreator.objects.all().delete()
     log = ''

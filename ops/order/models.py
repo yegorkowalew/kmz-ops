@@ -5,11 +5,15 @@ from officenotes.models import OfficeNote
 class Order(models.Model):
     shipmentfrom = models.DateField(
                             verbose_name='Отгрузка "от"', 
-                            help_text="Дата служебной записки, указаннная в ней"
+                            help_text="Дата служебной записки, указаннная в ней",
+                            null = True,
+                            blank = True,
                             )
     shipmentto = models.DateField(
                             verbose_name='Отгрузка "до"', 
-                            help_text="Дата служебной записки, указаннная в ней"
+                            help_text="Дата служебной записки, указаннная в ней",
+                            null = True,
+                            blank = True,
                             )
     
     product = models.CharField(

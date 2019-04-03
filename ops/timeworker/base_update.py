@@ -5,6 +5,8 @@ from customer.models import Customer
 
 from random import randint
 import openpyxl
+import os
+myhost = os.environ['COMPUTERNAME']
 
 # 1. Удалить:
 #     Компании
@@ -16,7 +18,10 @@ import openpyxl
 #     Из Плана производства
 #     Из Графика Количества
 
-files_list = {'notes':'Z:\\Служебные записки.xlsx'}
+if myhost == "BOB":
+    files_list = {'notes':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\Служебные записки.xlsx'}
+elif myhost == "pdo-pro":
+    files_list = {'notes':'Z:\\Служебные записки.xlsx'}
 
 class Unit:
     def __init__(self, tableid, shipment_from, shipment_to, product, counterparty, ordernum, quantity, firstofficenote, otherofficenote, date, datereceiving, pickingplan, pickingpercent, pickingfact, shippingplan, shippingpercent, shippingfact, engineeringplan, engineeringpercent, engineeringfact, drawingchangepercent, drawingchangefact, materialplan, materialfact):
@@ -82,18 +87,42 @@ def append_notes(fpath):
             sheet.cell(row=row, column=39).value,
             )
         nunits.append(unit)
-    print(nunits)
     work_wb.close()
-        # detail = StandartDetailCreator(fid = unit.fid, shipment_from = unit.shipment_from, shipment_to = unit.shipment_to, product = unit.product, counterparty = unit.counterparty, order_number = unit.order_number, amount = unit.amount, sz = unit.sz)
-        # detail.save()
+    cust = [
+        Order(
+            product = nunit.product,
+            tableid = nunit.tableid,
 
-        # print(unit.counterparty)
-        # if unit.counterparty != None:
-        #     ncustomer, created = Customer.objects.get_or_create(
-        #         name=unit.counterparty,
-        #     )
-        #     print(created)
-        #     ncustomer.save()
+            shipmentfrom = nunit.shipment_from,
+            shipmentto = nunit.shipment_to,
+            ordernum = nunit.ordernum,
+            quantity = nunit.quantity,
+            pickingplan = nunit.pickingplan,
+            pickingpercent = nunit.pickingpercent,
+            pickingfact = nunit.pickingfact,
+            shippingplan = nunit.shippingplan,
+            shippingpercent = nunit.shippingpercent,
+            shippingfact = nunit.shippingfact,
+            engineeringplan = nunit.engineeringplan,
+            engineeringpercent = nunit.engineeringpercent,
+            engineeringfact = nunit.engineeringfact,
+            drawingchangepercent = nunit.drawingchangepercent,
+            drawingchangefact = nunit.drawingchangefact,
+            materialplan = nunit.materialplan,
+            materialfact = nunit.materialfact,
+
+            firstofficenote = OfficeNote.objects.get_or_create(
+                num = nunit.firstofficenote,
+                date = nunit.date,
+                datereceiving = nunit.datereceiving,
+                oncustomer = Customer.objects.get_or_create(
+                    name = nunit.counterparty
+                    )[0]
+                )[0]
+            )
+        for nunit in nunits
+    ]
+    custom = Order.objects.bulk_create(cust)
 
 def append_base(flist):
     for name_model, fpath in flist.items():
@@ -101,9 +130,9 @@ def append_base(flist):
             append_notes(fpath)
 
 def delete_base():
-    # zz = StandartDetailCreator.objects.all().delete()
+    zz = Customer.objects.all().delete()
     log = ''
-    # log += 'Удалено %s записей из Теста' % zz[0]
+    log += 'Удалено %s записей из Теста' % zz[0]
     log += ''
     return log
 
@@ -116,3 +145,25 @@ def update():
     not_processed_rows=randint(1, 1000)
     log_text += log
     return yes_processed_rows, not_processed_rows, log_text
+
+# customers = {}
+# for nunit in nunits:
+#     if nunit.counterparty in customers:
+#             customer = customers[nunit.counterparty]
+#     else:
+#         customer, _ = Customer.objects.get_or_create(
+#                 name = nunit.counterparty
+#             )
+#         customers[nunit.counterparty] = customer
+#     officenote, _ = OfficeNote.objects.get_or_create(
+#             num = nunit.firstofficenote,
+#             date = nunit.date,
+#             datereceiving = nunit.datereceiving,
+#             oncustomer = customer
+#         )
+#     norder = Order(
+#         product = nunit.product,
+#         tableid = nunit.tableid,
+#         firstofficenote = officenote
+#     )
+#     norder.save()

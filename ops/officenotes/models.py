@@ -12,11 +12,15 @@ class OfficeNote(models.Model):
                             )
     date = models.DateField(
                             verbose_name="Дата служебной записки", 
-                            help_text="Дата служебной записки, указаннная в ней"
+                            help_text="Дата служебной записки, указаннная в ней", 
+                            null = True,
+                            blank = True,
                             )
     datereceiving = models.DateField(
                             verbose_name="Дата получения служебной записки", 
                             help_text="Дата получения служебной записки, указанная в почте", 
+                            null = True,
+                            blank = True,
                             )
     oncustomer = models.ForeignKey(
                             Customer,

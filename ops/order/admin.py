@@ -14,7 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
             ('drawingchangepercent', 'drawingchangefact'), 
             ('materialplan', 'materialfact'), 
             ('tableid', 'firstofficenote'))
-    list_display = ('product', 'ordernum', 'quantity')
+    list_display = ('tableid', 'product', 'ordernum', 'quantity')
     search_fields = ['product']
     inlines = [MemberShopInlineAdmin]
 

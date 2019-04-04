@@ -28,6 +28,8 @@ class OfficeNote(models.Model):
                             max_length=50,
                             on_delete=models.CASCADE,
                             help_text='Заказчик',
+                            null = True,
+                            blank = True,
                             )
 
     def __unicode__(self):

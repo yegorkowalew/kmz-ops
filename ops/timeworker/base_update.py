@@ -87,11 +87,22 @@ def append_notes(fpath):
             )
         nunits.append(unit)
     work_wb.close()
+    
+    zz = []
+    for nunit in nunits:
+        if nunit.otherofficenote != None:
+            zz += nunit.otherofficenote.split(',')
+            for xx in nunit.otherofficenote.split(','):
+                OfficeNote.objects.get_or_create(num = xx)
+                
+
+    print(list(set(zz)))
+
+
     cust = [
         Order(
             product = nunit.product,
             tableid = nunit.tableid,
-
             shipmentfrom = nunit.shipment_from,
             shipmentto = nunit.shipment_to,
             ordernum = nunit.ordernum,
@@ -109,8 +120,8 @@ def append_notes(fpath):
             drawingchangefact = nunit.drawingchangefact,
             materialplan = nunit.materialplan,
             materialfact = nunit.materialfact,
-
             firstofficenote = OfficeNote.objects.get_or_create(
+
                 num = nunit.firstofficenote,
                 date = nunit.date,
                 datereceiving = nunit.datereceiving,
@@ -122,27 +133,32 @@ def append_notes(fpath):
         for nunit in nunits
     ]
     custom = Order.objects.bulk_create(cust)
+    return [0, 0, 'Добавлено 0 строк из файла: 0 \n']
+    # return [len(custom), 0, 'Добавлено %s строк из файла: %s \n' % (len(custom), fpath)]
 
 def append_base(flist):
     for name_model, fpath in flist.items():
         if name_model == 'notes':
-            append_notes(fpath)
+            return append_notes(fpath)
 
 def delete_base():
-    zz = Customer.objects.all().delete()
-    log = ''
-    log += 'Удалено %s записей из Теста' % zz[0]
-    log += ''
-    return log
-
+    deleted = Customer.objects.all().delete()
+    return [0, deleted[0], 'Удалено %s записей из базы \n' % deleted[0]]
 
 def update():
+    yes_processed_rows = 0
+    not_processed_rows = 0
     log_text = ''
-    log = delete_base()
-    append_base(files_list)
-    yes_processed_rows=randint(1, 1000)
-    not_processed_rows=randint(1, 1000)
-    log_text += log
+
+    deletebd = delete_base()
+    yes_processed_rows += deletebd[0]
+    not_processed_rows += deletebd[1]
+    log_text += deletebd[2]
+
+    appendbd = append_base(files_list)
+    yes_processed_rows += appendbd[0]
+    not_processed_rows += appendbd[1]
+    log_text += appendbd[2]
     return yes_processed_rows, not_processed_rows, log_text
 
 # customers = {}

@@ -142,6 +142,6 @@ class Order(models.Model):
         return "/order/%i/" % self.id
 
     class Meta:
-        ordering = ["ordernum"]
+        ordering = ["tableid"]
         verbose_name = "заказ"
         verbose_name_plural = "заказы"

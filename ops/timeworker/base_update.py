@@ -1,4 +1,3 @@
-# from testapp.models import StandartDetailCreator
 from officenotes.models import OfficeNote
 from order.models import Order
 from customer.models import Customer
@@ -20,7 +19,7 @@ myhost = os.environ['COMPUTERNAME']
 
 if myhost == "BOB":
     files_list = {'notes':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\Служебные записки.xlsx'}
-elif myhost == "pdo-pro":
+elif myhost == "PDO-PRO":
     files_list = {'notes':'Z:\\Служебные записки.xlsx'}
 
 class Unit:

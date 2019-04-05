@@ -58,7 +58,7 @@ def append_notes(fpath):
         exit(0)
     sheet = work_wb['Просчет']
     nunits = []
-    for row in range(2, sheet.max_row+1):#sheet.max_row+1):
+    for row in range(2, sheet.max_row+1):
         unit = Unit(
             sheet.cell(row=row, column=2).value,
             sheet.cell(row=row, column=4).value,
@@ -88,44 +88,89 @@ def append_notes(fpath):
         nunits.append(unit)
     work_wb.close()
     
-    for nunit in nunits:
-        oncustomer, _ = Customer.objects.get_or_create(
-                name = nunit.counterparty
-                )
-        firstofficenote, _ = OfficeNote.objects.get_or_create(
+    # for nunit in nunits:
+    #     oncustomer, _ = Customer.objects.get_or_create(
+    #             name = nunit.counterparty
+    #             )
+    #     firstofficenote, _ = OfficeNote.objects.get_or_create(
+    #             num = nunit.firstofficenote,
+    #             date = nunit.date,
+    #             datereceiving = nunit.datereceiving,
+    #             oncustomer = oncustomer
+    #             )
+    #     orderr = Order(
+    #             product = nunit.product,
+    #             tableid = nunit.tableid,
+    #             shipmentfrom = nunit.shipment_from,
+    #             shipmentto = nunit.shipment_to,
+    #             ordernum = nunit.ordernum,
+    #             quantity = nunit.quantity,
+    #             pickingplan = nunit.pickingplan,
+    #             pickingpercent = nunit.pickingpercent,
+    #             pickingfact = nunit.pickingfact,
+    #             shippingplan = nunit.shippingplan,
+    #             shippingpercent = nunit.shippingpercent,
+    #             shippingfact = nunit.shippingfact,
+    #             engineeringplan = nunit.engineeringplan,
+    #             engineeringpercent = nunit.engineeringpercent,
+    #             engineeringfact = nunit.engineeringfact,
+    #             drawingchangepercent = nunit.drawingchangepercent,
+    #             drawingchangefact = nunit.drawingchangefact,
+    #             materialplan = nunit.materialplan,
+    #             materialfact = nunit.materialfact,
+    #             firstofficenote = firstofficenote
+    #             )
+    #     orderr.save()
+    #     if nunit.otherofficenote != None:
+    #         for xx in nunit.otherofficenote.split(','):
+    #             oof_note, _ = OfficeNote.objects.get_or_create(num = xx)
+    #             orderr.otherofficenote.add(oof_note)
+    #         orderr.save()
+
+    objs = [
+    Order(
+        product = nunit.product,
+        tableid = nunit.tableid,
+        shipmentfrom = nunit.shipment_from,
+        shipmentto = nunit.shipment_to,
+        ordernum = nunit.ordernum,
+        quantity = nunit.quantity,
+        pickingplan = nunit.pickingplan,
+        pickingpercent = nunit.pickingpercent,
+        pickingfact = nunit.pickingfact,
+        shippingplan = nunit.shippingplan,
+        shippingpercent = nunit.shippingpercent,
+        shippingfact = nunit.shippingfact,
+        engineeringplan = nunit.engineeringplan,
+        engineeringpercent = nunit.engineeringpercent,
+        engineeringfact = nunit.engineeringfact,
+        drawingchangepercent = nunit.drawingchangepercent,
+        drawingchangefact = nunit.drawingchangefact,
+        materialplan = nunit.materialplan,
+        materialfact = nunit.materialfact,
+        firstofficenote = OfficeNote.objects.get_or_create(
                 num = nunit.firstofficenote,
                 date = nunit.date,
                 datereceiving = nunit.datereceiving,
-                oncustomer = oncustomer
-                )
-        orderr = Order(
-                product = nunit.product,
-                tableid = nunit.tableid,
-                shipmentfrom = nunit.shipment_from,
-                shipmentto = nunit.shipment_to,
-                ordernum = nunit.ordernum,
-                quantity = nunit.quantity,
-                pickingplan = nunit.pickingplan,
-                pickingpercent = nunit.pickingpercent,
-                pickingfact = nunit.pickingfact,
-                shippingplan = nunit.shippingplan,
-                shippingpercent = nunit.shippingpercent,
-                shippingfact = nunit.shippingfact,
-                engineeringplan = nunit.engineeringplan,
-                engineeringpercent = nunit.engineeringpercent,
-                engineeringfact = nunit.engineeringfact,
-                drawingchangepercent = nunit.drawingchangepercent,
-                drawingchangefact = nunit.drawingchangefact,
-                materialplan = nunit.materialplan,
-                materialfact = nunit.materialfact,
-                firstofficenote = firstofficenote
-                )
-        orderr.save()
+                oncustomer = Customer.objects.get_or_create(
+                    name = nunit.counterparty
+                    )[0]
+                )[0]
+        )
+    for nunit in nunits
+    ]
+    Order.objects.bulk_create(objs)
+
+    notes = Order.objects.all()
+    
+    for nunit in nunits:
         if nunit.otherofficenote != None:
-            for xx in nunit.otherofficenote.split(','):
-                oof_note, _ = OfficeNote.objects.get_or_create(num = xx)
-                orderr.otherofficenote.add(oof_note)
-            orderr.save()
+            note = notes.get(tableid=nunit.tableid)
+            for othernum in nunit.otherofficenote.split(','):
+                note.otherofficenote.add(
+                    OfficeNote.objects.get_or_create(num = othernum)[0]
+                )
+            note.save()
 
     return [len(nunits), 0, 'Добавлено %s строк из файла: %s \n' % (len(nunits), fpath)]
 
@@ -153,25 +198,3 @@ def update():
     not_processed_rows += appendbd[1]
     log_text += appendbd[2]
     return yes_processed_rows, not_processed_rows, log_text
-
-# customers = {}
-# for nunit in nunits:
-#     if nunit.counterparty in customers:
-#             customer = customers[nunit.counterparty]
-#     else:
-#         customer, _ = Customer.objects.get_or_create(
-#                 name = nunit.counterparty
-#             )
-#         customers[nunit.counterparty] = customer
-#     officenote, _ = OfficeNote.objects.get_or_create(
-#             num = nunit.firstofficenote,
-#             date = nunit.date,
-#             datereceiving = nunit.datereceiving,
-#             oncustomer = customer
-#         )
-#     norder = Order(
-#         product = nunit.product,
-#         tableid = nunit.tableid,
-#         firstofficenote = officenote
-#     )
-#     norder.save()

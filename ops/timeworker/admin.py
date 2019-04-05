@@ -18,7 +18,8 @@ make_tworker.short_description = "Обновление базы"
 
 class TWorkerAdmin(admin.ModelAdmin):
     list_display = ('id', 'date_start_f', 'date_end_f', 'days_between', 'yes_processed_rows', 'not_processed_rows')
-    readonly_fields = ('id', 'date_start_f', 'date_end_f', 'yes_processed_rows', 'not_processed_rows', 'log_text', 'date_start_f')
+    readonly_fields = ('id', 'date_start_f', 'date_end_f', 'yes_processed_rows', 'not_processed_rows', 'log_text')
+    fields = ('id', ('date_start_f', 'date_end_f'), ('yes_processed_rows', 'not_processed_rows'), 'log_text')
     actions = [make_tworker]
     def changelist_view(self, request, extra_context=None):
         if 'action' in request.POST and request.POST['action'] == 'make_tworker':
@@ -31,11 +32,11 @@ class TWorkerAdmin(admin.ModelAdmin):
 
     def date_start_f(self, instance):
         return mark_safe("<span>%s</span>" % instance.date_start.strftime("%d.%m.%Y %H:%M:%S"))
-    date_start_f.short_description = "Начало работ"
+    date_start_f.short_description = "Начало обновления"
 
     def date_end_f(self, instance):
         return mark_safe("<span>%s</span>" % instance.date_end.strftime("%d.%m.%Y %H:%M:%S"))
-    date_end_f.short_description = "Начало работ"
+    date_end_f.short_description = "Конец обновления"
 
     def days_between(self, instance):
         return abs((instance.date_end - instance.date_start).seconds)

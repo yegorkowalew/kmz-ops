@@ -5,7 +5,7 @@ from .models import OfficeNote
 
 class OfficeNoteAdmin(admin.ModelAdmin):
     fields = (('num', 'oncustomer'), ('date', 'datereceiving'))
-    list_display = ('num', 'date', 'datereceiving')
+    list_display = ('num', 'oncustomer', 'date', 'datereceiving')
     search_fields = ['num']
 
 admin.site.register(OfficeNote, OfficeNoteAdmin)

@@ -12,10 +12,10 @@ class Customer(models.Model):
                             )
 
     def __unicode__(self):
-        return self.pk
+        return "%s (%s)" % (self.name, self.pk)
 
     def __str__(self):
-            return '%s' % self.pk
+            return "%s (%s)" % (self.name, self.pk)
 
     def get_absolute_url(self):
         return "/office-note/%i/" % self.pk

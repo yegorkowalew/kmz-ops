@@ -3,6 +3,9 @@ from django.db import models
 from officenotes.models import OfficeNote
 
 class Order(models.Model):
+    ready = models.BooleanField(
+        verbose_name='Готов'
+    )
     shipmentfrom = models.DateField(
                             verbose_name='Отгрузка "от"', 
                             help_text="Дата служебной записки, указаннная в ней",

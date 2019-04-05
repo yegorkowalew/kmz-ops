@@ -23,8 +23,12 @@ elif myhost == "PDO-PRO":
     files_list = {'notes':'Z:\\Служебные записки.xlsx'}
 
 class Unit:
-    def __init__(self, tableid, shipment_from, shipment_to, product, counterparty, ordernum, quantity, firstofficenote, otherofficenote, date, datereceiving, pickingplan, pickingpercent, pickingfact, shippingplan, shippingpercent, shippingfact, engineeringplan, engineeringpercent, engineeringfact, drawingchangepercent, drawingchangefact, materialplan, materialfact):
+    def __init__(self, ready, tableid, shipment_from, shipment_to, product, counterparty, ordernum, quantity, firstofficenote, otherofficenote, date, datereceiving, pickingplan, pickingpercent, pickingfact, shippingplan, shippingpercent, shippingfact, engineeringplan, engineeringpercent, engineeringfact, drawingchangepercent, drawingchangefact, materialplan, materialfact):
         """Constructor for Unit"""
+        if ready == '+':
+            self.ready = True
+        else:
+            self.ready = False
         self.tableid = tableid # id в таблице 
         self.shipment_from = shipment_from # Отгрузка от 
         self.shipment_to = shipment_to # Отгрузка до 
@@ -60,6 +64,7 @@ def append_notes(fpath):
     nunits = []
     for row in range(2, sheet.max_row+1):
         unit = Unit(
+            sheet.cell(row=row, column=3).value,
             sheet.cell(row=row, column=2).value,
             sheet.cell(row=row, column=4).value,
             sheet.cell(row=row, column=5).value,
@@ -129,6 +134,7 @@ def append_notes(fpath):
 
     objs = [
     Order(
+        ready = nunit.ready,
         product = nunit.product,
         tableid = nunit.tableid,
         shipmentfrom = nunit.shipment_from,

@@ -6,7 +6,7 @@ class MemberShopInlineAdmin(admin.TabularInline):
     model = Order.otherofficenote.through
 
 class OrderAdmin(admin.ModelAdmin):
-    fields = (('shipmentfrom', 'shipmentto'), 
+    fields = ('ready', ('shipmentfrom', 'shipmentto'), 
             ('product', 'ordernum', 'quantity'), 
             ('pickingplan', 'pickingpercent', 'pickingfact'), 
             ('shippingplan', 'shippingpercent', 'shippingfact'), 

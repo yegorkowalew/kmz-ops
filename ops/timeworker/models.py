@@ -8,12 +8,12 @@ class TWorker(models.Model):
                             verbose_name="Окончание работ", 
                             )
     yes_processed_rows = models.PositiveIntegerField(
-                            verbose_name="Удачно обработанные строки",
-                            help_text="Удачно обработанные строки"
+                            verbose_name="Добавленные строки",
+                            help_text="Добавленные строки"
                             )
     not_processed_rows = models.PositiveIntegerField(
-                            verbose_name="Не удачно обработанные строки",
-                            help_text="Не удачно обработанные строки"
+                            verbose_name="Удаленные строки",
+                            help_text="Удаленные строки"
                             )
     log_text = models.TextField(
                             verbose_name="Лог",

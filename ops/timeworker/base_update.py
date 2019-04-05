@@ -94,10 +94,7 @@ def append_notes(fpath):
             zz += nunit.otherofficenote.split(',')
             for xx in nunit.otherofficenote.split(','):
                 OfficeNote.objects.get_or_create(num = xx)
-                
-
     print(list(set(zz)))
-
 
     cust = [
         Order(

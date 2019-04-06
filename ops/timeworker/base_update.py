@@ -54,6 +54,12 @@ class Unit:
         self.materialplan = materialplan # Материалы План 
         self.materialfact = materialfact # Материалы Факт 
 
+class OfficeNotePath:
+    def __init__(self, officenote, fpath):
+        """Constructor for OfficeNotePath"""
+        self.officenote = officenote # № СЗ
+        self.fpath = fpath # № СЗ
+
 def append_notes(fpath):
     try:
         work_wb = openpyxl.load_workbook(filename=fpath)
@@ -91,46 +97,17 @@ def append_notes(fpath):
             sheet.cell(row=row, column=39).value,
             )
         nunits.append(unit)
+
+    pathsheet = work_wb['Файлы']
+    officepath = []
+    for row in range(2, pathsheet.max_row+1):
+        unitfp = OfficeNotePath(
+            pathsheet.cell(row=row, column=2).value,
+            pathsheet.cell(row=row, column=4).value,
+        )
+        officepath.append(unitfp)
+
     work_wb.close()
-    
-    # for nunit in nunits:
-    #     oncustomer, _ = Customer.objects.get_or_create(
-    #             name = nunit.counterparty
-    #             )
-    #     firstofficenote, _ = OfficeNote.objects.get_or_create(
-    #             num = nunit.firstofficenote,
-    #             date = nunit.date,
-    #             datereceiving = nunit.datereceiving,
-    #             oncustomer = oncustomer
-    #             )
-    #     orderr = Order(
-    #             product = nunit.product,
-    #             tableid = nunit.tableid,
-    #             shipmentfrom = nunit.shipment_from,
-    #             shipmentto = nunit.shipment_to,
-    #             ordernum = nunit.ordernum,
-    #             quantity = nunit.quantity,
-    #             pickingplan = nunit.pickingplan,
-    #             pickingpercent = nunit.pickingpercent,
-    #             pickingfact = nunit.pickingfact,
-    #             shippingplan = nunit.shippingplan,
-    #             shippingpercent = nunit.shippingpercent,
-    #             shippingfact = nunit.shippingfact,
-    #             engineeringplan = nunit.engineeringplan,
-    #             engineeringpercent = nunit.engineeringpercent,
-    #             engineeringfact = nunit.engineeringfact,
-    #             drawingchangepercent = nunit.drawingchangepercent,
-    #             drawingchangefact = nunit.drawingchangefact,
-    #             materialplan = nunit.materialplan,
-    #             materialfact = nunit.materialfact,
-    #             firstofficenote = firstofficenote
-    #             )
-    #     orderr.save()
-    #     if nunit.otherofficenote != None:
-    #         for xx in nunit.otherofficenote.split(','):
-    #             oof_note, _ = OfficeNote.objects.get_or_create(num = xx)
-    #             orderr.otherofficenote.add(oof_note)
-    #         orderr.save()
 
     objs = [
     Order(
@@ -177,6 +154,12 @@ def append_notes(fpath):
                     OfficeNote.objects.get_or_create(num = othernum)[0]
                 )
             note.save()
+
+    for ufpath in officepath:
+        note = OfficeNote.objects.get(num=ufpath.officenote)
+        # print(ufpath.officenote)
+        note.filepath = ufpath.fpath
+        note.save()
 
     return [len(nunits), 0, 'Добавлено %s строк из файла: %s \n' % (len(nunits), fpath)]
 

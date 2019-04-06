@@ -2,6 +2,13 @@ from django.db import models
 
 from customer.models import Customer
 
+import os
+myhost = os.environ['COMPUTERNAME']
+if myhost == "BOB":
+    files_folder = 'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство'
+elif myhost == "PDO-PRO":
+    files_folder = 'Z:\\'
+
 class OfficeNote(models.Model):
     num = models.PositiveIntegerField(
                             verbose_name="Номер служебной записки",
@@ -28,6 +35,13 @@ class OfficeNote(models.Model):
                             max_length=50,
                             on_delete=models.CASCADE,
                             help_text='Заказчик',
+                            null = True,
+                            blank = True,
+                            )
+    filepath = models.CharField(
+                            verbose_name="Путь к файлу",
+                            help_text='Путь к файлу',
+                            max_length=100,
                             null = True,
                             blank = True,
                             )

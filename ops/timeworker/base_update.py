@@ -155,13 +155,19 @@ def append_notes(fpath):
                 )
             note.save()
 
-    for ufpath in officepath:
-        note = OfficeNote.objects.get(num=ufpath.officenote)
-        # print(ufpath.officenote)
-        note.filepath = ufpath.fpath
-        note.save()
+    # for ufpath in officepath:
+    #     note = OfficeNote.objects.get(num=ufpath.officenote)
+    #     # print(ufpath.officenote)
+    #     note.filepath = ufpath.fpath
+    #     note.save()
 
-    return [len(nunits), 0, 'Добавлено %s строк из файла: %s \n' % (len(nunits), fpath)]
+    ubdatesofficenotes = OfficeNote.objects.all()
+    for ufpath in officepath:
+        note = ubdatesofficenotes.get(num=ufpath.officenote)
+        note.filepath = ufpath.fpath
+    OfficeNote.objects.bulk_update(ubdatesofficenotes, ['filepath'])
+
+    return [len(nunits), 0, 'Прочитано %s строк в файле: %s \n' % (len(nunits), fpath)]
 
 def append_base(flist):
     for name_model, fpath in flist.items():

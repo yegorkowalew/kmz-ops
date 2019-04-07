@@ -271,10 +271,12 @@ def append_notes(fpath):
                 )
 
     ubdatesofficenotes = OfficeNote.objects.all()
+    sa = []
     for ufpath in officepath:
         note = ubdatesofficenotes.get(num=ufpath.officenote)
         note.filepath = ufpath.fpath
-    OfficeNote.objects.bulk_update(ubdatesofficenotes, ['filepath'])
+        sa.append(note)
+    OfficeNote.objects.bulk_update(sa, ['filepath',])
 
     objs = [
     Workshop(

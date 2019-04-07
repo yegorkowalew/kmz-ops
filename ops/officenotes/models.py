@@ -2,12 +2,12 @@ from django.db import models
 
 from customer.models import Customer
 
-import os
-myhost = os.environ['COMPUTERNAME']
-if myhost == "BOB":
-    files_folder = 'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство'
-elif myhost == "PDO-PRO":
-    files_folder = 'Z:\\'
+# import os
+# myhost = os.environ['COMPUTERNAME']
+# if myhost == "BOB":
+#     files_folder = 'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство'
+# elif myhost == "PDO-PRO":
+#     files_folder = 'Z:\\'
 
 class OfficeNote(models.Model):
     num = models.PositiveIntegerField(

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'timeworker.apps.TimeworkerConfig',
+    'graph.apps.GraphConfig',
     # 'testapp.apps.TestappConfig',
     'officenotes.apps.OfficenotesConfig',
     'customer.apps.CustomerConfig',

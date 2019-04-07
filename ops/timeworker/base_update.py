@@ -1,26 +1,23 @@
 from officenotes.models import OfficeNote
 from order.models import Order
 from customer.models import Customer
+from graph.models import Workshop, DateRange
 
 from random import randint
 import openpyxl
 import os
 myhost = os.environ['COMPUTERNAME']
 
-# 1. Удалить:
-#     Компании
-#     Служебные записки
-#     Заказы
-
-# 2. Добавить
-#     Из Служебных записок - notes
-#     Из Плана производства
-#     Из Графика Количества
-
 if myhost == "BOB":
-    files_list = {'notes':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\Служебные записки.xlsx'}
+    files_list = {
+        'notes':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\Служебные записки.xlsx', 
+        'graph':'C:\\Users\\Yegor\\Dropbox\\ПДО_Производство\\График план производства\\План производства.xlsx'
+        }
 elif myhost == "PDO-PRO":
-    files_list = {'notes':'Z:\\Служебные записки.xlsx'}
+    files_list = {
+        'notes':'Z:\\Служебные записки.xlsx',
+        'graph':'Z:\\График план производства\\План производства.xlsx'
+        }
 
 class Unit:
     def __init__(self, ready, tableid, shipment_from, shipment_to, product, counterparty, ordernum, quantity, firstofficenote, otherofficenote, date, datereceiving, pickingplan, pickingpercent, pickingfact, shippingplan, shippingpercent, shippingfact, engineeringplan, engineeringpercent, engineeringfact, drawingchangepercent, drawingchangefact, materialplan, materialfact):
@@ -60,7 +57,103 @@ class OfficeNotePath:
         self.officenote = officenote # № СЗ
         self.fpath = fpath # № СЗ
 
+class CWorkshop:
+    def __init__(self, numname, name, fullname):
+        """Constructor for CWorkshop"""
+        self.numname = numname # Номер цеха
+        self.name = name # Название 
+        self.fullname = fullname # Полное название
+
+class Graph:
+    def __init__(self, dorder, twodatestart, twodateend, onedatestart, onedateend, sevendatestart, sevendateend, fourdatestart, fourdateend):
+        """Constructor for OfficeNotePath"""
+        self.dorder = dorder # № Заказа
+        self.twodatestart = twodatestart # 
+        self.twodateend = twodateend # 
+        self.onedatestart = onedatestart # 
+        self.onedateend = onedateend # 
+        self.sevendatestart = sevendatestart # 
+        self.sevendateend = sevendateend # 
+        self.fourdatestart = fourdatestart # 
+        self.fourdateend = fourdateend # 
+
+def append_graph(fpath):
+    yes_processed_rows = 0
+    not_processed_rows = 0
+    log_text = ''
+
+    try:
+        work_wb = openpyxl.load_workbook(filename=fpath)
+    except:
+        print('trabl')
+        exit(0)
+    sheet = work_wb['Даты']
+    nunits = []
+    for row in range(2, sheet.max_row+1):
+        unit = Graph(
+            sheet.cell(row=row, column=1).value,
+            sheet.cell(row=row, column=2).value,
+            sheet.cell(row=row, column=3).value,
+            sheet.cell(row=row, column=4).value,
+            sheet.cell(row=row, column=5).value,
+            sheet.cell(row=row, column=6).value,
+            sheet.cell(row=row, column=7).value,
+            sheet.cell(row=row, column=8).value,
+            sheet.cell(row=row, column=9).value
+        )
+        nunits.append(unit)
+    work_wb.close()
+
+    yes_processed_rows += len(nunits)
+    not_processed_rows += 0
+    log_text += 'Прочитано %s строк на листе "Даты" в файле: %s \n' % (len(nunits), fpath)
+
+    sa = []
+    shop = Workshop.objects.all()
+    for un in nunits:
+        drorder = Order.objects.filter(ordernum=un.dorder)
+        for order in drorder:
+            for sh in shop:
+                if sh.numname == 102:
+                    if un.twodatestart != None:
+                        sa.append(DateRange(
+                            workshop = sh,
+                            order = order,
+                            datestart = un.twodatestart,
+                            dateend = un.twodateend
+                        ))
+                if sh.numname == 101:
+                    if un.onedatestart != None:
+                        sa.append(DateRange(
+                            workshop = sh,
+                            order = order,
+                            datestart = un.onedatestart,
+                            dateend = un.onedateend
+                        ))
+                if sh.numname == 107:
+                    if un.sevendatestart != None:
+                        sa.append(DateRange(
+                            workshop = sh,
+                            order = order,
+                            datestart = un.sevendatestart,
+                            dateend = un.sevendateend
+                        ))
+                if sh.numname == 104:
+                    if un.fourdatestart != None:
+                        sa.append(DateRange(
+                            workshop = sh,
+                            order = order,
+                            datestart = un.fourdatestart,
+                            dateend = un.fourdateend
+                        ))
+    DateRange.objects.bulk_create(sa)
+    return [yes_processed_rows, not_processed_rows, log_text]
+
 def append_notes(fpath):
+    yes_processed_rows = 0
+    not_processed_rows = 0
+    log_text = ''
+
     try:
         work_wb = openpyxl.load_workbook(filename=fpath)
     except:
@@ -98,6 +191,10 @@ def append_notes(fpath):
             )
         nunits.append(unit)
 
+    yes_processed_rows += len(nunits)
+    not_processed_rows += 0
+    log_text += 'Прочитано %s строк на листе "Просчет" в файле: %s \n' % (len(nunits), fpath)
+
     pathsheet = work_wb['Файлы']
     officepath = []
     for row in range(2, pathsheet.max_row+1):
@@ -106,6 +203,25 @@ def append_notes(fpath):
             pathsheet.cell(row=row, column=4).value,
         )
         officepath.append(unitfp)
+
+    yes_processed_rows += len(officepath)
+    not_processed_rows += 0
+    log_text += 'Прочитано %s строк на листе "Файлы" в файле: %s \n' % (len(officepath), fpath)
+
+    shopsheet = work_wb['Цех']
+    shop = []
+    for row in range(2, shopsheet.max_row+1):
+        print(row)
+        unitfp = CWorkshop(
+            shopsheet.cell(row=row, column=1).value,
+            shopsheet.cell(row=row, column=2).value,
+            shopsheet.cell(row=row, column=3).value
+        )
+        shop.append(unitfp)
+
+    yes_processed_rows += len(shop)
+    not_processed_rows += 0
+    log_text += 'Прочитано %s строк на листе "Цех" в файле: %s \n' % (len(shop), fpath)
 
     work_wb.close()
 
@@ -153,13 +269,6 @@ def append_notes(fpath):
                 note.otherofficenote.add(
                     OfficeNote.objects.get_or_create(num = othernum)[0]
                 )
-            note.save()
-
-    # for ufpath in officepath:
-    #     note = OfficeNote.objects.get(num=ufpath.officenote)
-    #     # print(ufpath.officenote)
-    #     note.filepath = ufpath.fpath
-    #     note.save()
 
     ubdatesofficenotes = OfficeNote.objects.all()
     for ufpath in officepath:
@@ -167,16 +276,62 @@ def append_notes(fpath):
         note.filepath = ufpath.fpath
     OfficeNote.objects.bulk_update(ubdatesofficenotes, ['filepath'])
 
-    return [len(nunits), 0, 'Прочитано %s строк в файле: %s \n' % (len(nunits), fpath)]
+    objs = [
+    Workshop(
+        numname = nunit.numname,
+        name = nunit.name,
+        fullname = nunit.fullname,
+        )
+    for nunit in shop
+    ]
+    Workshop.objects.bulk_create(objs)
+
+    return [yes_processed_rows, not_processed_rows, log_text]
 
 def append_base(flist):
+    yes_processed_rows = 0
+    not_processed_rows = 0
+    log_text = ''
+
+    status = []
     for name_model, fpath in flist.items():
+        print(fpath)
         if name_model == 'notes':
-            return append_notes(fpath)
+            print('notes')
+            status = append_notes(fpath)
+            yes_processed_rows += status[0]
+            not_processed_rows += status[1]
+            log_text += status[2]
+
+        if name_model == 'graph':
+            print('graph')
+            status = append_graph(fpath)
+            yes_processed_rows += status[0]
+            not_processed_rows += status[1]
+            log_text += status[2]
+    return [yes_processed_rows, not_processed_rows, log_text]
 
 def delete_base():
-    deleted = Customer.objects.all().delete()
-    return [0, deleted[0], 'Удалено %s записей из базы \n' % deleted[0]]
+    yes_processed_rows = 0
+    not_processed_rows = 0
+    log_text = ''
+
+    custom_deleted = Customer.objects.all().delete()
+    yes_processed_rows += 0
+    not_processed_rows += custom_deleted[0]
+    log_text += 'Удалено %s записей из "Customer" \n' % custom_deleted[0]
+
+    workshop_deleted = Workshop.objects.all().delete()
+    yes_processed_rows += 0
+    not_processed_rows += workshop_deleted[0]
+    log_text += 'Удалено %s записей из "Workshop" \n' % workshop_deleted[0]
+
+    officenote_deleted = OfficeNote.objects.all().delete()
+    yes_processed_rows += 0
+    not_processed_rows += officenote_deleted[0]
+    log_text += 'Удалено %s записей из "OfficeNote" \n' % officenote_deleted[0]
+
+    return [yes_processed_rows, not_processed_rows, log_text]
 
 def update():
     yes_processed_rows = 0

@@ -124,62 +124,66 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+#     'C:/work/kmz-ops/ops/static/',
+# ]
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    'C:/work/kmz-ops/ops/static/',
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
 
 # MEDIA_ROOT = "".join(os.path.join(os.path.dirname(file), 'media').replace('\','/')
 
 MEDIA_ROOT = 'C:/work/kmz-ops/ops/media/'
 MEDIA_URL = '/media/'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            # 'format': '{asctime} {levelname} {module} {message}',
-             'format': '%(levelname)-8s [%(asctime)s] [%(name)s.%(funcName)s] [LINE:%(lineno)d] - %(message)s',
-            #  'format': "'%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S'",
-            #  (format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'verbose',
-            'filename': 'debug.log',
-        },
-        'console': {
-            'level': 'DEBUG',
-            # 'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-        'filecatalog': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'catalog.log',
-            'formatter': 'simple'
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'catalog': {
-            'handlers': ['filecatalog', 'console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+#             'style': '{',
+#         },
+#         'simple': {
+#             # 'format': '{asctime} {levelname} {module} {message}',
+#              'format': '%(levelname)-8s [%(asctime)s] [%(name)s.%(funcName)s] [LINE:%(lineno)d] - %(message)s',
+#             #  'format': "'%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S'",
+#             #  (format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+#         },
+#     },
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'formatter': 'verbose',
+#             'filename': 'debug.log',
+#         },
+#         'console': {
+#             'level': 'DEBUG',
+#             # 'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },
+#         'filecatalog': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': 'catalog.log',
+#             'formatter': 'simple'
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'catalog': {
+#             'handlers': ['filecatalog', 'console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }

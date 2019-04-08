@@ -275,6 +275,7 @@ def append_notes(fpath):
     for ufpath in officepath:
         note = ubdatesofficenotes.get(num=ufpath.officenote)
         note.filepath = ufpath.fpath
+        # note.save()
         sa.append(note)
     OfficeNote.objects.bulk_update(sa, ['filepath',])
 

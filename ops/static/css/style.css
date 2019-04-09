@@ -66,6 +66,7 @@ a:focus {
     transition: all 0.3s;
     overflow-y: scroll;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1040;
 }
 
 #sidebar.active {
@@ -108,6 +109,7 @@ a:focus {
 }
 
 #sidebar .sidebar-header {
+    /* margin-top: 70px; */
     padding: 20px;
     background: #F05624;
 }
@@ -192,6 +194,7 @@ a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
+    margin-top: 3.5rem;
 }
 
 .btn-menuslide {
@@ -218,7 +221,52 @@ a.article:hover {
 }
 
 .alert-success {
-    color: #155724;
-    /* background-color: #d4edda; */
-    /* border-color: #c3e6cb; */
+    background-color: rgba(0, 255, 0, 0);
+    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 200, 0, 0.2)); */
+    border-right: 5px solid #28a745;
 }
+.alert-warning {
+    background-color: rgba(0, 255, 0, 0);
+    /* background-color: rgba(255, 255, 0, 0.1); */
+    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(179, 179, 0, 0.2)); */
+    border-right: 5px solid #ffc107;
+}
+.alert-danger {
+    background-color: rgba(0, 255, 0, 0);
+    /* background-color: rgba(255, 0, 0, 0.1); */
+    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 0, 0, 0.2)); */
+    border-right: 5px solid #dc3545;
+}
+.alert-primary {
+    background-color: rgba(0, 255, 0, 0);
+    /* background-color: rgba(0, 0, 148, 0.1); */
+    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 148, 0.2)); */
+    border-right: 5px solid #007bff;
+}
+.alert-secondary {
+    background-color: rgba(0, 255, 0, 0);
+    /* background-color: rgba(126, 126, 126, 0.1); */
+    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(126, 126, 126, 0.2)); */
+    border-right: 5px solid #6c757d;
+}
+
+.tblrow {
+    /* border: 1px solid #999; */
+    /* margin-top:2px; */
+    border-bottom: 1px solid #afafaf;
+}
+
+.tblrow:hover {
+    background: rgba(150, 150, 150, 0.5);
+    color: #212529;
+    /* background-color: rgba(156, 156, 156, 0.2); */
+  }
+
+.customerblock {
+    margin-bottom:10px;
+}
+.customerblock:hover {
+    /* background-color: #fff; */
+    /* background: linear-gradient(to right, rgb(168, 168, 168), rgb(167, 167, 167)); */
+    /* border: 1px solid #212529; */
+  }

@@ -1,6 +1,7 @@
 from django.db import models
 
 from officenotes.models import OfficeNote
+from datetime import datetime
 
 class Order(models.Model):
     ready = models.BooleanField(
@@ -143,6 +144,18 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return "/order/%i/" % self.id
+    
+    def get_status(self):
+        if self.shipmentto != None:
+            return (self.shipmentto - datetime.now().date()).days
+        else:
+            return None
+
+    def get_shipmen(self):
+        if self.shipmentfrom != None:
+            return "%s-%s" % (self.shipmentfrom.strftime("%d"), self.shipmentto.strftime("%d.%m.%Y"))
+        elif self.shipmentto != None:
+            return "%s" % self.shipmentto.strftime("%d.%m.%Y")
 
     class Meta:
         ordering = ["tableid"]

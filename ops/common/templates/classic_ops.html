@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<h2>Оперативный производственный график</h2>
+{% for order in orders %}
+<div class="container-fluid">
+    <div class="row
+    {% if order.ready %}alert-success
+    {% elif order.get_status < 0 %}alert-danger
+    {% elif order.get_status < 10 %}alert-warning
+    {% elif order.get_status > 10 %}alert-primary
+    {% else %}aler-secondary
+    {% endif %}" style="margin-top:2px">
+        <div class="tbl col-xl-3 col-lg-12">
+            <div class="row">
+                <div class="tbl col-2">
+                    {% if order.ready %}<a href="#" class="badge badge-success">100%</a>
+                    {% elif order.get_status < 0 %}<a href="#" class="badge badge-danger">{{order.get_status}}</a>
+                    {% elif order.get_status < 10 %}<a href="#" class="badge badge-warning">{{order.get_status}}</a>
+                    {% elif order.get_status > 10 %}<a href="#" class="badge badge-primary">{{order.get_status}}</a>
+                    {% else %}<a href="#" class="badge badge-secondary">{{order.get_status}}</a>
+                    {% endif %}</div>
+                <div class="tbl col-4">
+                        {% if order.get_shipmen %}{{order.get_shipmen}}{% endif %}
+                    </div>
+                <div class="tbl col-6"><a href="#" class="badge badge-secondary">{{order.firstofficenote.oncustomer.name}}</a></div>
+            </div>
+        </div>
+        <div class="tbl col-xl-6 col-lg-12">{{order.product|capfirst}}</div>
+        <div class="tbl col-xl-3 col-lg-12">
+            <div class="row">
+                <div class="tbl col-2">{{order.quantity}}</div>
+                <div class="tbl col-4">
+                    {% if order.ordernum %}<a href="#" class="badge badge-warning">{{order.ordernum}}</a>{% endif %}
+                </div>
+                <div class="tbl col-6">
+                    {% if order.firstofficenote.num != None %}<a href="#" class="badge badge-info">{{order.firstofficenote.num}}</a>{% endif %}
+                    {% for otherofficenote in order.otherofficenote.all  %}<a href="#" class="badge badge-info">{{otherofficenote.num}}</a> {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="line"></div>
+<!-- <div class="container-fluid">
+        <div class="row border">
+            <div class="tbl col-xl-3 col-lg-12">
+                <div class="row">
+                    <div class="tbl col-2"><a href="#" class="badge badge-success">100%</a></div>
+                    <div class="tbl col-4">04&#8209;08.03.2019</div>
+                    <div class="tbl col-6"><a href="#" class="badge badge-secondary">ТОВ "НОВА НИВА"</a></div>
+                </div>
+            </div>
+            <div class="tbl col-xl-6 col-lg-12">Комплект аспіраціонної системи до ссепаратора КБС кр.6418.00 (повітропровод, переходи)</div>
+            <div class="tbl col-xl-3 col-lg-12">
+                <div class="row">
+                    <div class="tbl col-2">23</div>
+                    <div class="tbl col-4"><a href="#" class="badge badge-warning">2317013</a></div>
+                    <div class="tbl col-6"><a href="#" class="badge badge-info">411</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border" style="margin-top:2px">
+                <div class="tbl col-xl-3 col-lg-12">
+                        <div class="row">
+                            <div class="tbl col-2"><a href="#" class="badge badge-success">100%</a></div>
+                            <div class="tbl col-4">04&#8209;08.03.2019</div>
+                            <div class="tbl col-6"><a href="#" class="badge badge-secondary">ТОВ "НОВА НИВА"</a></div>
+                        </div>
+                    </div>
+                    <div class="tbl col-xl-6 col-lg-12">Комплект аспіраціонної системи до ссепаратора КБС кр.6418.00 (повітропровод, переходи)</div>
+                    <div class="tbl col-xl-3 col-lg-12">
+                        <div class="row">
+                            <div class="tbl col-2">23</div>
+                            <div class="tbl col-4"><a href="#" class="badge badge-warning">2317013</a></div>
+                            <div class="tbl col-6"><a href="#" class="badge badge-info">411</a></div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row border" style="margin-top:2px">
+                    <div class="tbl col-xl-3 col-lg-12">
+                            <div class="row">
+                                <div class="tbl col-2"><a href="#" class="badge badge-success">100%</a></div>
+                                <div class="tbl col-4">04&#8209;08.03.2019</div>
+                                <div class="tbl col-6"><a href="#" class="badge badge-secondary">ТОВ "НОВА НИВА"</a></div>
+                            </div>
+                        </div>
+                        <div class="tbl col-xl-6 col-lg-12">Комплект аспіраціонної системи до ссепаратора КБС кр.6418.00 (повітропровод, переходи)</div>
+                        <div class="tbl col-xl-3 col-lg-12">
+                            <div class="row">
+                                <div class="tbl col-2">23</div>
+                                <div class="tbl col-4"><a href="#" class="badge badge-warning">2317013</a></div>
+                                <div class="tbl col-6"><a href="#" class="badge badge-info">411</a></div>
+                            </div>
+                        </div>
+                </div>
+</div>
+<div class="line"></div> -->
+{% endblock %}

@@ -1,8 +1,15 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Calibri', sans-serif;
-    background: #fafafa;
+    /* background: #fafafa; */
 }
+
+body {
+    background:url(../img/back.jpg) no-repeat;
+    /* padding-top:100px; */
+    background-size:cover;
+    background-attachment: fixed;
+  }
 
 p {
     font-family: 'Poppins', sans-serif;
@@ -208,4 +215,10 @@ a.article:hover {
 .tbl {
     padding-right: 10px;
     padding-left: 10px;
+}
+
+.alert-success {
+    color: #155724;
+    /* background-color: #d4edda; */
+    /* border-color: #c3e6cb; */
 }

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<h2>Краткая сводка по производству</h2>
+<ul>
+    <li>Служебных записок: {{len_notes}}</li>
+    <li>Заказов: {{len_orders}}</li>
+    <li>Готовых заказов: {{len_ready_orders}}</li>
+</ul>
+{% endblock %}

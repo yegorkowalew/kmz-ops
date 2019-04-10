@@ -265,8 +265,17 @@ a.article:hover {
 .customerblock {
     margin-bottom:10px;
 }
-.customerblock:hover {
+/* .customerblock:hover { */
     /* background-color: #fff; */
     /* background: linear-gradient(to right, rgb(168, 168, 168), rgb(167, 167, 167)); */
     /* border: 1px solid #212529; */
-  }
+  /* } */
+
+.peity{
+    /* padding-left: 10px; */
+    padding-top: 0.45rem;
+}
+
+.card-body {
+    padding: 0.4rem;
+}

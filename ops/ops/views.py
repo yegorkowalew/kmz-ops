@@ -3,6 +3,8 @@ import logging
 
 from officenotes.models import OfficeNote
 from order.models import Order
+from datetime import datetime
+from datetime import timedelta
 
 logger = logging.getLogger('catalog')
 
@@ -12,12 +14,33 @@ def index(request):
     """
     title = "Главная"
 
+    nowday = datetime.now()
+    day_add_ten_days = nowday+timedelta(days=10)
+    all_orders = Order.objects.all()
+    len_orders = all_orders.count()
+    len_ready_orders = all_orders.filter(ready=True).count()
+    len_min_ten = all_orders.filter(ready=False).filter(shipmentto__lte=day_add_ten_days).count()
+    len_max_ten = all_orders.filter(ready=False).filter(shipmentto__gte=day_add_ten_days).count()
+    len_pros = all_orders.filter(ready=False).filter(shipmentto__lte=nowday).count()
+    # Все заказы - 
+    # Готовые - 
+    # Просроченные -
+    # Меньше 10 дней - 
+    # Больше 10 дней - 
+    print('---',len_max_ten)
+    print('--',len_min_ten)
+    print('-',len_pros)
+    
+    
     logger.info('"%s" page visited. User: %s' % (title, request.user))
     return TemplateResponse(request, 'index.html', {
                                                     'title':title, 
                                                     'len_notes':OfficeNote.objects.all().count(),
-                                                    'len_orders':Order.objects.all().count(),
-                                                    'len_ready_orders':Order.objects.filter(ready=True).count(),
+                                                    'len_orders':len_orders, # Все заказы
+                                                    'len_ready_orders':len_ready_orders, # Готовые
+                                                    'len_max_ten':len_max_ten, # Больше 10 дней
+                                                    'len_min_ten':len_min_ten, # Меньше 10 дней
+                                                    'len_pros':len_pros, # Просроченные
                                                     })
 
 def classic_ops(request):

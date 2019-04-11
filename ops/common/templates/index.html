@@ -15,8 +15,16 @@
     <div class="card-body">
       <h4 class="card-title">Сводка по заказам</h4>
       <div class="row">
-        <div class="col" style="background-color: aquamarine; width: 200px">1</div>
-        <div class="col">2</div>
+        <div class=""> <!--  style="background-color: aquamarine; width: 160px; height: 160px;" -->
+          <span class="peity-donut" data-peity='{ "fill": ["#007bff","#ffc107","#dc3545"], "height": 150, "width": 150 }'>{{len_max_ten}},{{len_min_ten}},{{len_pros}}</span>
+        </div>
+        <div class="col">
+          <ul class="card-ul">
+            <li>Заказы в работе: <a href="#" class="badge badge-primary">{{len_max_ten}}</a></li>
+            <li>Осталось меньше 10 дней: <a href="#" class="badge badge-warning">{{len_min_ten}}</a></li>
+            <li>Просроченные заказы: <a href="#" class="badge badge-danger">{{len_pros}}</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

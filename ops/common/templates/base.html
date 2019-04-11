@@ -100,22 +100,8 @@
                     <button class="btn btn-menuslide d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
-
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                        </ul> -->
+                        {% block menubuttons %}{% endblock %}
                     </div>
                 </div>
             </nav>
@@ -158,6 +144,45 @@
 
             $(".peity-donut").peity("donut");
 
+            $('#flt-ready').click(function() {
+            $(this).toggleClass("btn-success btn-outline-success");
+            $('.ready').toggleClass("show");
+            return false;
+            });
+
+            $('#flt-overdue').click(function() {
+            $(this).toggleClass("btn-danger btn-outline-danger");
+            $('.overdue').toggleClass("show");
+            return false;
+            });
+
+            $('#flt-tendays').click(function() {
+            $(this).toggleClass("btn-warning btn-outline-warning");
+            $('.tendays').toggleClass("show");
+            return false;
+            });
+
+            $('#flt-inwork').click(function() {
+            $(this).toggleClass("btn-primary btn-outline-primary");
+            $('.inwork').toggleClass("show");
+            return false;
+            });
+
+            $('#flt-np').click(function() {
+            $(this).toggleClass("btn-info btn-outline-info");
+            $('.np').toggleClass("show");
+            return false;
+            });
+
+            $.each($('.l-order'), function(i) {
+                if(i % 2 == 0){
+                    // console.log(i);
+                    $(this).addClass("l-order-two");
+                };
+                
+            });
+
+            console.log('ddd');
         });
     </script>
 </body>

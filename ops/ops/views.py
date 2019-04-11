@@ -27,9 +27,9 @@ def index(request):
     # Просроченные -
     # Меньше 10 дней - 
     # Больше 10 дней - 
-    print('---',len_max_ten)
-    print('--',len_min_ten)
-    print('-',len_pros)
+    # print('---',len_max_ten)
+    # print('--',len_min_ten)
+    # print('-',len_pros)
     
     
     logger.info('"%s" page visited. User: %s' % (title, request.user))

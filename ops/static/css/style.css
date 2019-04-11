@@ -250,20 +250,9 @@ a.article:hover {
     border-right: 5px solid #6c757d;
 }
 
-.tblrow {
-    /* border: 1px solid #999; */
-    /* margin-top:2px; */
-    border-bottom: 1px solid #afafaf;
-}
-
-.tblrow:hover {
-    background: rgba(150, 150, 150, 0.5);
-    color: #212529;
-    /* background-color: rgba(156, 156, 156, 0.2); */
-  }
-
 .customerblock {
     margin-bottom:10px;
+    border: 1px solid red;
 }
 /* .customerblock:hover { */
     /* background-color: #fff; */
@@ -274,4 +263,25 @@ a.article:hover {
   .card-ul {
     margin-left: -10px;
     list-style-type: none; /* Квадратные маркеры */
+}
+
+.l-order {
+    font-size: 0.9rem;
+    border: 1px solid #afafaf;
+    border-bottom: none;
+    margin-bottom: 5px;
+}
+
+.l-order:hover {
+    background: rgba(185, 185, 185, 0.2);
+    color: #212529;
+}
+
+.tblrow {
+    border-bottom: 1px solid #afafaf;
+}
+
+.tblrow:hover {
+    background: rgba(150, 150, 150, 0.5);
+    color: #212529;
 }

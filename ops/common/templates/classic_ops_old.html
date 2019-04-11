@@ -1,0 +1,56 @@
+<div class="container-fluid">
+{% for order in orders %}
+    {% ifchanged order.firstofficenote.oncustomer.name %}
+        {% if forloop.first %}
+            <div class="customerblock">
+        {% elif forloop.last %}
+            </div>
+        {% else %}
+        </div>
+        <div class="customerblock">
+        {% endif %}
+    {% endifchanged %}
+    <div class="row tblrow
+    {% if order.ready %}alert-success
+    {% elif order.get_status < 0 %}alert-danger
+    {% elif order.get_status < 10 %}alert-warning
+    {% elif order.get_status > 10 %}alert-primary
+    {% else %}alert-secondary
+    {% endif %}">
+        <div class="tbl col-xl-3 col-lg-12">
+            <div class="row">
+                <div class="tbl col-2">
+                    {% if order.ready %}<a href="#" class="badge badge-success">100%</a>
+                    {% elif order.get_status < 0 %}<a href="#" class="badge badge-danger">{{order.get_status}}</a>
+                    {% elif order.get_status < 10 %}<a href="#" class="badge badge-warning">{{order.get_status}}</a>
+                    {% elif order.get_status > 10 %}<a href="#" class="badge badge-primary">{{order.get_status}}</a>
+                    {% else %}<a href="#" class="badge badge-secondary">{{order.get_status}}</a>
+                    {% endif %}</div>
+                <div class="tbl col-3 text-right">
+                        {% if order.get_shipmen %}{{order.get_shipmen}}{% endif %}
+                    </div>
+                <div class="tbl col-6"><a href="#" class="badge badge-secondary">{{order.firstofficenote.oncustomer.name}}</a></div>
+            </div>
+        </div>
+        <div class="tbl col-xl-6 col-lg-12">{{order.product|capfirst}}</div>
+        <div class="tbl col-xl-3 col-lg-12">
+            <div class="row">
+                <div class="tbl col-2 text-right">
+                        {% if order.quantity %}
+                            {{order.quantity|floatformat}}шт.
+                        {% endif %}
+                        </div>
+                <div class="tbl col-4">
+                    {% if order.ordernum %}<a href="#" class="badge badge-warning">{{order.ordernum}}</a>{% endif %}
+                </div>
+                <div class="tbl col-6">
+                    {% if order.firstofficenote.num != None %}<a href="#" class="badge badge-info">{{order.firstofficenote.num}}</a>{% endif %}
+                    {% for otherofficenote in order.otherofficenote.all  %}<a href="#" class="badge badge-info">{{otherofficenote.num}}</a> {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+
+</div>

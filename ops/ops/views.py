@@ -54,3 +54,12 @@ def classic_ops(request):
                                                     'title':title, 
                                                     'orders':Order.objects.all(),
                                                     })
+
+from django.views.generic.detail import DetailView
+
+class OfficeNoteDetailView(DetailView):
+    model = OfficeNote
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['officenote'] = OfficeNote.objects.get(pk=1435)
+    #     return context

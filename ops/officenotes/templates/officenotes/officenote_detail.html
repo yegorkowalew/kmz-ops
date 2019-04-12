@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Служебная записка №{{ object.num }} {% endblock %}
+{% block menubuttons %}
+
+{% endblock %}
+{% block content %}
+<h2>Служебная записка №{{ object.num }}</h2>
+<div class="container-fluid">
+    <ul class="list-group list-group-horizontal-xl">
+        {% if object.oncustomer.name %}<li class="list-group-item"><b>Контрагент:</b> <a href="http://" style="white-space: nowrap;">{{ object.oncustomer.name }}</a></li>{% endif %}
+        {% if object.date %}<li class="list-group-item"><b>Дата служебной записки:</b> <span style="white-space: nowrap">{{ object.date }}</span></li>{% endif %}
+        {% if object.datereceiving %}<li class="list-group-item"><b>Дата получения:</b> <span style="white-space: nowrap">{{ object.datereceiving }}</span></li>{% endif %}
+        {% if object.filepath %}<li class="list-group-item"><b>Файл:</b> {{ object.filepath }}</li>{% endif %}
+    </ul>
+
+</div>
+<div class="line"></div>
+{% endblock %}

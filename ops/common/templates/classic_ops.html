@@ -8,9 +8,7 @@
     <li><button id="flt-tendays" class="btn btn-sm btn-warning" type="button" style="margin-left: 5px" data-toggle="tooltip" title="Показать/Скрыть заказы до отгрузки которых осталось меньше 10 дней">Остальсь 10 дней</button></li>
     <li><button id="flt-inwork" class="btn btn-sm btn-primary" type="button" style="margin-left: 5px" data-toggle="tooltip" title="Показать/Скрыть заказы в работе">В работе</button></li>
 </ul>
-
 {% endblock %}
-
 {% block content %}
 <h2>Оперативный производственный график</h2>
 <div class="container-fluid">
@@ -35,7 +33,9 @@
             <div class="tbl col">
                 <div class="row">
                     <div class="tbl text-secondary" style="width: 60px;">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
-                    <div class="col">{% if order.firstofficenote.num != None %}<a href="#" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="#" class="text-info">{{otherofficenote.num}}</a>{% endfor %}</div>
+                    <div class="col">
+                        {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.filepath|default_if_none:'#'}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="#" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

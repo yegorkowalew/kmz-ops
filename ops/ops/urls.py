@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from .views import OfficeNoteDetailView
+from .views import OfficeNoteDetailView, OrderDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('classic-ops/', views.classic_ops, name='classic_ops'),
     # path('/office-note/<int:id>', OfficeNoteDetailView.as_view(), name='article-detail'),
     path('office-note/<int:pk>/', OfficeNoteDetailView.as_view(), name='article-detail'),
+    path('order/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

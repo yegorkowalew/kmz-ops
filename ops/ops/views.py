@@ -31,7 +31,7 @@ def index(request):
     # Больше 10 дней - 
     # print('---',len_max_ten)
     # print('--',len_min_ten)
-    # print('-',len_pros)
+    # print('-', TWorker.objects.last().log_text)
     
     
     logger.info('"%s" page visited. User: %s' % (title, request.user))
@@ -43,6 +43,7 @@ def index(request):
                                                     'len_max_ten':len_max_ten, # Больше 10 дней
                                                     'len_min_ten':len_min_ten, # Меньше 10 дней
                                                     'len_pros':len_pros, # Просроченные
+                                                    'last_log': TWorker.objects.last()
                                                     })
 
 def classic_ops(request):
@@ -68,5 +69,12 @@ class OfficeNoteDetailView(DetailView):
             context['orders'] = Order.objects.filter(firstofficenote__num=self.object.num)
         else:
             context['orders'] = Order.objects.filter(otherofficenote__num=self.object.num)
+        context['rebild'] = TWorker.objects.last()
+        return context
+
+class OrderDetailView(DetailView):
+    model = Order
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['rebild'] = TWorker.objects.last()
         return context

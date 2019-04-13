@@ -26,7 +26,7 @@
             </div>
             <div class="tbl col-xl-7 col-lg-12">
                 <div class="row">
-                    <div class="col"><a href="#" >{{order.product|capfirst}}</a></div>
+                    <div class="col"><a href="{{order.get_absolute_url}}" >{{order.product|capfirst}}</a></div>
                     <div class="" style="width: 70px;">{% if order.quantity %}{{order.quantity|floatformat}}шт.{% endif %}</div>
                 </div>  
             </div>

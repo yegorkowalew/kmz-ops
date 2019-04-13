@@ -151,6 +151,32 @@ class Order(models.Model):
         else:
             return None
 
+    def get_expired_picking(self):
+        if self.pickingplan and self.pickingfact:
+            return (self.pickingplan - self.pickingfact).days
+        else:
+            return None
+
+    def get_expired_shipping(self):
+        if self.shippingplan and self.shippingfact:
+            return (self.shippingplan - self.shippingfact).days
+        else:
+            return None
+
+    def get_expired_engineering(self):
+        if self.engineeringplan and self.engineeringfact:
+            return (self.engineeringplan - self.engineeringfact).days
+        else:
+            return None
+
+    def get_expired_material(self):
+        if self.materialplan and self.materialfact:
+            print((self.materialplan - self.materialfact).days)
+            return (self.materialplan - self.materialfact).days
+        else:
+            print(self.materialplan, ' ', self.materialfact)
+            return None
+
     def get_shipmen(self):
         if self.shipmentfrom != None:
             return "%s-%s" % (self.shipmentfrom.strftime("%d"), self.shipmentto.strftime("%d.%m.%Y"))

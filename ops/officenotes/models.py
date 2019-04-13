@@ -55,6 +55,12 @@ class OfficeNote(models.Model):
     def get_absolute_url(self):
         return "/office-note/%i/" % self.id
 
+    def get_expired(self):
+        if self.datereceiving and self.datereceiving:
+            return (self.datereceiving - self.date).days
+        else:
+            return None
+
     class Meta:
         ordering = ["num"]
         verbose_name = "служебную записку"

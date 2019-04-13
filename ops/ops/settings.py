@@ -25,7 +25,7 @@ SECRET_KEY = '^=3-mr^qz=8yw$e7dww4c4p=%@$5!u02g^p%pu#n5i%9#nty++'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pdo-pro', '127.0.0.1']
+ALLOWED_HOSTS = ['pdo-pro', 'bob', '127.0.0.1']
 
 
 # Application definition

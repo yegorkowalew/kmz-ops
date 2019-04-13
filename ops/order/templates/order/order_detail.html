@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block title %}Заказ {% if object.ordernum %}№{{object.ordernum}}{% endif %} {% if object.product %}- {{object.product}} {% endif %}{% if object.quantity %}- {{object.quantity|floatformat}}шт.{% endif %}{% endblock %}
+{% block menubuttons %}
+{% endblock %}
+{% block content %}
+<h2>{% if object.ready %}
+    <i class="fas fa-check-square text-success"></i>
+    {% else %}
+    <i class="far fa-square"></i>
+    {% endif %} 
+    {% if object.product %}{{object.product}}{% endif %}</h2>
+<div class="container-fluid">
+    <ul class="list-group list-group-horizontal-xl">
+        <li class="list-group-item"><b>Отгрузка:</b> <span style="white-space: nowrap">{% if object.shipmentfrom %}{{ object.shipmentfrom }} &ndash; {% endif %}{{ object.shipmentto }}</span></li>
+        <li class="list-group-item"><b>Статус:</b>
+            {% if object.ready %}<b class="text-success">Готов</b>
+            {% elif object.get_status < 0 %}<b class="text-danger">{{object.get_status}} дня(ей) просрочено</b>
+            {% elif object.get_status < 10 %}<b  class="text-warning">{{object.get_status}} дня(ей) до отгрузки</b>
+            {% elif object.get_status > 10 %}<b class="text-primary text-nowrap">{{object.get_status}} дня(ей) до отгрузки</b>
+            {% else %}<b class="text-info">Не производится</a></b>
+            {% endif %}
+        </li>
+        {% if object.firstofficenote %}<li class="list-group-item"><b>Служебная записка:</b> <span style="white-space: nowrap"><a href="{{object.firstofficenote.get_absolute_url}}" class="text-info">{{ object.firstofficenote }}</a>{% for otherofficenote in object.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}</span></li>{% endif %}
+        {% if object.ordernum %}<li class="list-group-item"><b>№ Заказа:</b> <span style="white-space: nowrap">{{ object.ordernum }}</span></li>{% endif %}
+        {% if object.product %}<li class="list-group-item"><b>Контрагент:</b> <span style="white-space: nowrap">{{ object.firstofficenote.oncustomer.name }}</span></li>{% endif %}
+        {% if object.product %}<li class="list-group-item"><b>Продукция:</b> {{ object.product|capfirst }}</li>{% endif %}
+        {% if object.quantity %}<li class="list-group-item"><b>Кол-во:</b> <span style="white-space: nowrap">{{ object.quantity|floatformat}}шт.</span></li>{% endif %}
+    </ul>
+
+    <div class="row">
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+              <div class="card mr-n3">
+                <div class="card-body">
+                  <h5 class="card-title">Служебная записка</h5>
+                  <p class="card-text">Дата: {% if object.firstofficenote.date %}{{ object.firstofficenote.date }}{% endif %}</p>
+                  <p class="card-text">Факт: {% if object.firstofficenote.datereceiving %}{{ object.firstofficenote.datereceiving }}{% endif %}</p>
+                  <p class="card-text">&nbsp;</p>
+                  <p class="card-text">Разница: 
+                    {% if object.firstofficenote.get_expired %}
+                        {% if object.firstofficenote.get_expired >= 0 %}<span class="text-success">{{ object.firstofficenote.get_expired }}дн.</span>
+                        {% else %}<span class="text-danger">{{ object.firstofficenote.get_expired }}дн.</span>
+                        {% endif %}
+                    {% endif %}
+                </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+              <div class="card mr-n3">
+                <div class="card-body">
+                  <h5 class="card-title">Комплектовочные</h5>
+                    <p class="card-text">План: {% if object.pickingplan %}{{ object.pickingplan }}{% endif %} </p>
+                    <p class="card-text">Факт: {% if object.pickingfact %}{{ object.pickingfact }}{% endif %} </p>
+                    <p class="card-text">Процент: {% if object.pickingpercent %}{{ object.pickingpercent }}%{% endif %} </p>
+                    <p class="card-text">Разница: 
+                            {% if object.get_expired_picking %}
+                                {% if object.get_expired_picking >= 0 %}<span class="text-success">{{ object.get_expired_picking }}дн.</span>
+                                {% else %}<span class="text-danger">{{ object.get_expired_picking }}дн.</span>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+                <div class="card mr-n3">
+                    <div class="card-body">
+                    <h5 class="card-title">Отгрузочные</h5>
+                        <p class="card-text">План: {% if object.shippingplan %}{{ object.shippingplan }}{% endif %} </p>
+                        <p class="card-text">Факт: {% if object.shippingfact %}{{ object.shippingfact }}{% endif %} </p>
+                        <p class="card-text">Процент: {% if object.shippingpercent %}{{ object.shippingpercent }}%{% endif %} </p>
+                        <p class="card-text">Разница: 
+                                {% if object.get_expired_shipping %}
+                                    {% if object.get_expired_shipping >= 0 %}<span class="text-success">{{ object.get_expired_shipping }}дн.</span>
+                                    {% else %}<span class="text-danger">{{ object.get_expired_shipping }}дн.</span>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+                <div class="card mr-n3">
+                    <div class="card-body">
+                    <h5 class="card-title">Конструкторские</h5>
+                        <p class="card-text">План: {% if object.engineeringplan %}{{ object.engineeringplan }}{% endif %}</p>
+                        <p class="card-text">Факт: {% if object.engineeringfact %} {{ object.engineeringfact }}{% endif %}</p>
+                        <p class="card-text">Процент: {% if object.engineeringpercent %} {{ object.engineeringpercent }}%{% endif %}</p>
+                        <p class="card-text">Разница: 
+                                {% if object.get_expired_engineering %}
+                                    {% if object.get_expired_engineering >= 0 %}<span class="text-success">{{ object.get_expired_engineering }}дн.</span>
+                                    {% else %}<span class="text-danger">{{ object.get_expired_engineering }}дн.</span>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+                <div class="card mr-n3">
+                    <div class="card-body">
+                    <h5 class="card-title">Изменение чертежей</h5>
+                        <p class="card-text">&nbsp;</p>
+                        <p class="card-text">Факт: {% if object.drawingchangefact %} {{ object.drawingchangefact }}{% endif %}</p>
+                        <p class="card-text">Процент: {% if object.drawingchangepercent %} {{ object.drawingchangepercent }}%{% endif %}</p>
+                        <p class="card-text">&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-2 col-lg-4 col-md-6" style="margin-top: 20px">
+                <div class="card mr-n3">
+                    <div class="card-body">
+                    <h5 class="card-title">Материалы</h5>
+                        <p class="card-text">План: {% if object.materialplan %}{{ object.materialplan }}{% endif %}</p>
+                        <p class="card-text">Факт: {% if object.materialfact %}{{ object.materialfact }}{% endif %}</p>
+                        <p class="card-text">&nbsp;</p>
+                        <p class="card-text">Разница: 
+                                {% if object.get_expired_material %}
+                                    {% if object.get_expired_material >= 0 %}<span class="text-success">{{ object.get_expired_material }}дн.</span>
+                                    {% else %}<span class="text-danger">{{ object.get_expired_material }}дн.</span>
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+<!-- 
+    {% if object.pickingplan %}<h4>Комплектовочные</h4>
+    <ul class="list-group list-group-horizontal-xl">
+        {% if object.pickingplan %}<li class="list-group-item"><b>План:</b> <span style="white-space: nowrap">{{ object.pickingplan }}</span></li>{% endif %}
+        {% if object.pickingfact %}<li class="list-group-item"><b>Факт:</b> <span style="white-space: nowrap">{{ object.pickingfact }}</span></li>{% endif %}
+        {% if object.pickingpercent %}<li class="list-group-item"><b>Процент:</b> <span style="white-space: nowrap">{{ object.pickingpercent }}%</span></li>{% endif %}
+    </ul>{% endif %}
+
+    {% if object.shippingplan %}<h4>Отгрузочные</h4>
+    <ul class="list-group list-group-horizontal-xl">
+        {% if object.shippingplan %}<li class="list-group-item"><b>План:</b> <span style="white-space: nowrap">{{ object.shippingplan }}</span></li>{% endif %}
+        {% if object.shippingfact %}<li class="list-group-item"><b>Факт:</b> <span style="white-space: nowrap">{{ object.shippingfact }}</span></li>{% endif %}
+        {% if object.shippingpercent %}<li class="list-group-item"><b>Процент:</b> <span style="white-space: nowrap">{{ object.shippingpercent }}%</span></li>{% endif %}
+    </ul>{% endif %}
+
+    {% if object.engineeringplan %}<h4>Конструкторская документация</h4>
+    <ul class="list-group list-group-horizontal-xl">
+        <li class="list-group-item"><b>План:</b> <span style="white-space: nowrap">{{ object.engineeringplan }}</span></li>
+        {% if object.engineeringfact %}<li class="list-group-item"><b>Факт:</b> <span style="white-space: nowrap">{{ object.engineeringfact }}</span></li>{% endif %}
+        {% if object.engineeringpercent %}<li class="list-group-item"><b>Процент:</b> <span style="white-space: nowrap">{{ object.engineeringpercent }}%</span></li>{% endif %}
+    </ul>{% endif %}
+
+    {% if object.drawingchangefact %}<h4>Изменение чертежей</h4>
+    <ul class="list-group list-group-horizontal-xl">
+        <li class="list-group-item"><b>Факт:</b> <span style="white-space: nowrap">{{ object.drawingchangefact }}</span></li>
+        {% if object.drawingchangepercent %}<li class="list-group-item"><b>Процент:</b> <span style="white-space: nowrap">{{ object.drawingchangepercent }}%</span></li>{% endif %}
+    </ul>{% endif %}
+
+    {% if object.materialplan %}<h4>Материалы</h4>
+    <ul class="list-group list-group-horizontal-xl">
+        <li class="list-group-item"><b>План:</b> <span style="white-space: nowrap">{{ object.materialplan }}</span></li>
+        {% if object.materialfact %}<li class="list-group-item"><b>Факт:</b> <span style="white-space: nowrap">{{ object.materialfact }}</span></li>{% endif %}
+    </ul>{% endif %} -->
+
+    <!-- <h4>Комплектовочные</h4>
+    <ul class="list-group list-group-horizontal-xl"> -->
+        <!-- {% if object.ready %}<li class="list-group-item"><b>Готов:</b> <span style="white-space: nowrap">{{ object.ready }}</span></li>{% endif %} -->
+        <!-- {% if object.shipmentfrom %}<li class="list-group-item"><b>Отгрузка "от":</b> <span style="white-space: nowrap">{{ object.shipmentfrom }}</span></li>{% endif %} -->
+        <!-- {% if object.shipmentto %}<li class="list-group-item"><b>Отгрузка "до":</b> <span style="white-space: nowrap">{{ object.shipmentto }}</span></li>{% endif %} -->
+        <!-- {% if object.product %}<li class="list-group-item"><b>Продукция":</b> <span style="white-space: nowrap">{{ object.product }}</span></li>{% endif %} -->
+        <!-- {% if object.ordernum %}<li class="list-group-item"><b>№ Заказа:</b> <span style="white-space: nowrap">{{ object.ordernum }}</span></li>{% endif %} -->
+        <!-- {% if object.quantity %}<li class="list-group-item"><b>Кол-во:</b> <span style="white-space: nowrap">{{ object.quantity }}</span></li>{% endif %} -->
+        <!-- {% if object.pickingplan %}<li class="list-group-item"><b>Комплектовочные План:</b> <span style="white-space: nowrap">{{ object.pickingplan }}</span></li>{% endif %}
+        {% if object.pickingpercent %}<li class="list-group-item"><b>Комплектовочные %:</b> <span style="white-space: nowrap">{{ object.pickingpercent }}</span></li>{% endif %}
+        {% if object.pickingfact %}<li class="list-group-item"><b>Комплектовочные Факт:</b> <span style="white-space: nowrap">{{ object.pickingfact }}</span></li>{% endif %} -->
+        <!-- {% if object.shippingplan %}<li class="list-group-item"><b>Отгрузочные План:</b> <span style="white-space: nowrap">{{ object.shippingplan }}</span></li>{% endif %}
+        {% if object.shippingpercent %}<li class="list-group-item"><b>Отгрузочные %:</b> <span style="white-space: nowrap">{{ object.shippingpercent }}</span></li>{% endif %}
+        {% if object.shippingfact %}<li class="list-group-item"><b>Отгрузочные Факт:</b> <span style="white-space: nowrap">{{ object.shippingfact }}</span></li>{% endif %} -->
+        <!-- {% if object.engineeringplan %}<li class="list-group-item"><b>Конструкторская План:</b> <span style="white-space: nowrap">{{ object.engineeringplan }}</span></li>{% endif %}
+        {% if object.engineeringpercent %}<li class="list-group-item"><b>Конструкторская %:</b> <span style="white-space: nowrap">{{ object.engineeringpercent }}</span></li>{% endif %}
+        {% if object.engineeringfact %}<li class="list-group-item"><b>Конструкторская Факт:</b> <span style="white-space: nowrap">{{ object.engineeringfact }}</span></li>{% endif %} -->
+        <!-- {% if object.drawingchangepercent %}<li class="list-group-item"><b>Изменения чертежей %:</b> <span style="white-space: nowrap">{{ object.drawingchangepercent }}</span></li>{% endif %}
+        {% if object.drawingchangefact %}<li class="list-group-item"><b>Изменения чертежей Факт:</b> <span style="white-space: nowrap">{{ object.drawingchangefact }}</span></li>{% endif %} -->
+        <!-- {% if object.materialplan %}<li class="list-group-item"><b>Материалы План:</b> <span style="white-space: nowrap">{{ object.materialplan }}</span></li>{% endif %}
+        {% if object.materialfact %}<li class="list-group-item"><b>Материалы Факт:</b> <span style="white-space: nowrap">{{ object.materialfact }}</span></li>{% endif %} -->
+        <!-- {% if object.tableid %}<li class="list-group-item"><b>id в таблице:</b> <span style="white-space: nowrap">{{ object.tableid }}</span></li>{% endif %} -->
+        <!-- {% if object.firstofficenote %}<li class="list-group-item"><b>Служебная записка:</b> <span style="white-space: nowrap">{{ object.firstofficenote }}</span></li>{% endif %} -->
+        <!-- {% if object.otherofficenote %}<li class="list-group-item"><b>Дополнительные служебные записки:</b> <span style="white-space: nowrap">{{ object.otherofficenote }}</span></li>{% endif %} -->
+    <!-- </ul> -->
+</div>
+<!-- 
+<div class="container-fluid">
+<div class="row l-order">
+<div class="col-12 collapse show {% if order.ready %}ready{% elif order.get_status < 0 %}overdue{% elif order.get_status < 10 %}tendays{% elif order.get_status > 10 %}inwork{% else %}np{% endif %}">
+    <div class="row tblrow">
+        <div class="col-xl-3 col-lg-12">
+            <div class="row">
+                <div class="tbl" style="width: 30px;">{% if order.ready %}<b><a href="#" class="text-success">100%</a></b>{% elif order.get_status < 0 %}<b><a href="#" class="text-danger">{{order.get_status}}</a></b>{% elif order.get_status < 10 %}<b><a href="#" class="text-warning">{{order.get_status}}</a></b>{% elif order.get_status > 10 %}<b><a href="#" class="text-primary">{{order.get_status}}</a></b>{% else %}<b><a href="#" class="text-info">Н.П.</a></b>{% endif %}</div>
+                <div class="tbl text-right" style="width: 120px">{% if order.get_shipmen %}{{order.get_shipmen}}{% endif %}</div>
+                <div class="tbl col" style="min-width: 250px;">{% if order.firstofficenote.oncustomer.name %}{{order.firstofficenote.oncustomer.name}}{% endif %}</div>
+            </div>
+        </div>
+        <div class="tbl col-xl-7 col-lg-12">
+            <div class="row">
+                <div class="col"><a href="#" >{{order.product|capfirst}}</a></div>
+                <div class="" style="width: 70px;">{% if order.quantity %}{{order.quantity|floatformat}}шт.{% endif %}</div>
+            </div>  
+        </div>
+        <div class="tbl col">
+            <div class="row">
+                <div class="tbl text-secondary" style="width: 60px;">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
+                <div class="col">
+                    {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+<div class="container-fluid">
+        <div class="row l-order">
+        <div class="col-12 collapse show">
+            <div class="row tblrow">
+                <div class="col-xl-2 col-lg-12">Служебная: 28.03-02.04.2019	-5</div>
+                <div class="col-xl-2 col-lg-12">Комплектовочные: 28.03-02.04.2019 -5</div>
+                <div class="col-xl-2 col-lg-12">Отгрузочные: 28.03-02.04.2019 -5</div>
+                <div class="col-xl-2 col-lg-12">Конструкторская: 28.03-02.04.2019 -5</div>
+                <div class="col-xl-3 col-lg-12">Изменения чертежей: 28.03-02.04.2019 -5</div>
+            </div>
+        </div>
+        </div>
+        </div> -->
+<div class="line"></div>
+{% include  'footer.html' %}
+{% endblock %}

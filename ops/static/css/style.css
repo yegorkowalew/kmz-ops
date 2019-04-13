@@ -11,13 +11,12 @@ body {
     background-attachment: fixed;
   } */
 
-p {
-    /* font-family: 'Poppins', sans-serif; */
+/* p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
     color: #999;
-}
+} */
 
 a,
 a:hover,
@@ -299,4 +298,21 @@ a.article:hover {
 .tblrow:hover {
     background: rgba(150, 150, 150, 0.5);
     color: #212529;
+}
+
+.list-group-horizontal-xl .list-group-item {
+    padding: 2px 8px 2px;
+}
+
+.card .card-title {
+    font-size: 1.1em;
+    margin-bottom: 0.1rem;
+    font-weight: bold;
+}
+
+.card .card-body {
+    padding: 2px 8px 2px;
+}
+.card p {
+    margin-bottom: 0;
 }

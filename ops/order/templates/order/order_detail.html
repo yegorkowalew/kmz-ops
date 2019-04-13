@@ -3,12 +3,7 @@
 {% block menubuttons %}
 {% endblock %}
 {% block content %}
-<h2>{% if object.ready %}
-    <i class="fas fa-check-square text-success"></i>
-    {% else %}
-    <i class="far fa-square"></i>
-    {% endif %} 
-    {% if object.product %}{{object.product}}{% endif %}</h2>
+<h2>{% if object.ready %}<i class="fas fa-check-square text-success"></i>{% elif object.get_status < 0 %}<i class="fas fa-square text-danger"></i>{% elif object.get_status < 10 %}<i class="fas fa-caret-square-up text-warning"></i>{% elif object.get_status > 10 %}<i class="fas fa-caret-square-right text-primary"></i>{% else %}<i class="far fa-square text-info"></i>{% endif %}{% if object.product %}{{object.product}}{% endif %}</h2>
 <div class="container-fluid">
     <ul class="list-group list-group-horizontal-xl">
         <li class="list-group-item"><b>Отгрузка:</b> <span style="white-space: nowrap">{% if object.shipmentfrom %}{{ object.shipmentfrom }} &ndash; {% endif %}{{ object.shipmentto }}</span></li>

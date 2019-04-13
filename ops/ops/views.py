@@ -3,6 +3,7 @@ import logging
 
 from officenotes.models import OfficeNote
 from order.models import Order
+from timeworker.models import TWorker
 from datetime import datetime
 from datetime import timedelta
 
@@ -53,6 +54,7 @@ def classic_ops(request):
     return TemplateResponse(request, 'classic_ops.html', {
                                                     'title':title, 
                                                     'orders':Order.objects.all(),
+                                                    'rebild':TWorker.objects.last()
                                                     })
 
 from django.views.generic.detail import DetailView
@@ -62,4 +64,5 @@ class OfficeNoteDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['orders'] = Order.objects.filter(firstofficenote__num=self.object.num)
+        context['rebild'] = TWorker.objects.last()
         return context

@@ -194,7 +194,8 @@ a.article:hover {
     position: absolute;
     top: 0;
     right: 0;
-    margin-top: 3.5rem;
+    /* margin-top: 3.5rem; */
+    padding-top: 4.5rem;
 }
 
 .btn-menuslide {

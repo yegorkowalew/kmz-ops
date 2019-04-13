@@ -62,11 +62,11 @@ class OfficeNoteDetailView(DetailView):
     model = OfficeNote
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        firstofficenotes = Order.objects.filter(firstofficenote__num=self.object.num)
-        otherofficenotes = Order.objects.filter(otherofficenote__num=self.object.num)
-        if list(firstofficenotes)>list(otherofficenotes):
-            context['orders'] = firstofficenotes
+        firstofficenotes = Order.objects.filter(firstofficenote__num=self.object.num).count()
+        otherofficenotes = Order.objects.filter(otherofficenote__num=self.object.num).count()
+        if firstofficenotes>otherofficenotes:
+            context['orders'] = Order.objects.filter(firstofficenote__num=self.object.num)
         else:
-            context['orders'] = otherofficenotes
+            context['orders'] = Order.objects.filter(otherofficenote__num=self.object.num)
         context['rebild'] = TWorker.objects.last()
         return context

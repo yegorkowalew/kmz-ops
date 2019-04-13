@@ -6,6 +6,7 @@ from order.models import Order
 from timeworker.models import TWorker
 from datetime import datetime
 from datetime import timedelta
+from django.views.generic.detail import DetailView
 
 logger = logging.getLogger('catalog')
 
@@ -57,12 +58,15 @@ def classic_ops(request):
                                                     'rebild':TWorker.objects.last()
                                                     })
 
-from django.views.generic.detail import DetailView
-
 class OfficeNoteDetailView(DetailView):
     model = OfficeNote
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['orders'] = Order.objects.filter(firstofficenote__num=self.object.num)
+        firstofficenotes = Order.objects.filter(firstofficenote__num=self.object.num)
+        otherofficenotes = Order.objects.filter(otherofficenote__num=self.object.num)
+        if list(firstofficenotes)>list(otherofficenotes):
+            context['orders'] = firstofficenotes
+        else:
+            context['orders'] = otherofficenotes
         context['rebild'] = TWorker.objects.last()
         return context

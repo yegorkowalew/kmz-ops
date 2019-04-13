@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="tbl text-secondary" style="width: 60px;">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
                     <div class="col">
-                        {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
+                        {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
                     </div>
                 </div>
             </div>

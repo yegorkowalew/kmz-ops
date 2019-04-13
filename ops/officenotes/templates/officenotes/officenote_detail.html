@@ -23,9 +23,8 @@
 
 
 <div class="container-fluid">
-        {% for order in orders %}{% ifchanged order.firstofficenote.oncustomer.name %}{% if forloop.first %}
-        <div class="row l-order">{% elif forloop.last %}</div>{% else %}</div>
-        <div class="row l-order">{% endif %}{% endifchanged %}
+        {% for order in orders %}
+        <div class="row l-order">
         <div class="col-12 collapse show {% if order.ready %}ready{% elif order.get_status < 0 %}overdue{% elif order.get_status < 10 %}tendays{% elif order.get_status > 10 %}inwork{% else %}np{% endif %}">
             <div class="row tblrow">
                 <div class="col-xl-3 col-lg-12">
@@ -45,13 +44,13 @@
                     <div class="row">
                         <div class="tbl text-secondary" style="width: 60px;">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
                         <div class="col">
-                            {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="#" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
+                            {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>{% endfor %}
-    </div>
+        </div>
+    </div>{% endfor %}
 </div>
 <div class="line"></div>
 {% include  'footer.html' %}

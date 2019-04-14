@@ -1,6 +1,9 @@
 from django.db import models
 from order.models import Order
 
+from datetime import datetime
+from datetime import timedelta
+
 class Workshop(models.Model):
     numname = models.PositiveIntegerField(
         verbose_name="Номер цеха",
@@ -67,6 +70,64 @@ class DateRange(models.Model):
 
     def get_absolute_url(self):
         return "/daterange/%i/" % self.pk
+
+    def get_to_work_days(self):
+        nowday = datetime.now().date()
+        if self.datestart and self.dateend:
+            return (self.datestart - nowday).days
+        else:
+            return None
+
+    def get_to_endwork_days(self):
+        nowday = datetime.now().date()
+        if self.datestart and self.dateend:
+            return (self.dateend - nowday).days
+        else:
+            return None
+
+    def get_work_days(self):
+        if self.datestart and self.dateend:
+            return (self.dateend - self.datestart).days
+        else:
+            return None
+
+    def get_day_in_work(self):
+        if self.datestart and self.dateend:
+            nowday = datetime.now().date()
+            return (nowday - self.datestart).days
+        else:
+            return None
+
+    def get_day_in_work_percent(self):
+        if self.datestart and self.dateend:
+            nowday = datetime.now().date()
+            print('Дней в работе ', (nowday - self.datestart).days)
+            print('Дней работы ', (self.dateend - self.datestart).days)
+            return round(((nowday - self.datestart).days*100)/(self.dateend - self.datestart).days)
+        else:
+            return None
+
+    def get_work(self):
+        if self.datestart and self.dateend:
+            nowday = datetime.now().date()
+            # to_work_days = (self.datestart - nowday).days # get_to_work_days дней до начала работы
+            # to_endwork_days = (self.dateend - nowday).days # get_to_endwork_days дней до конца работы
+            work_days = (self.dateend - self.datestart).days+1 #get_work_days дней в работе
+            day_in_work = (nowday - self.datestart).days+1 #get_day_in_work прошло дней с начала работы
+            percent = round(((nowday - self.datestart).days*100)/((self.dateend - self.datestart).days+1)) #get_day_in_work_percent прошло дней с начала работы в процентах 
+
+            if day_in_work >= work_days:
+                day_in_work = work_days
+                percent = 100 
+            return {
+                'to_work_days': (self.datestart - nowday).days, # get_to_work_days дней до начала работы 
+                'to_endwork_days': (self.dateend - nowday).days+1, # get_to_endwork_days дней до конца работы
+                'work_days': (self.dateend - self.datestart).days+1, #get_work_days дней в работе
+                'day_in_work': day_in_work, #get_day_in_work прошло дней с начала работы
+                'percent': percent, #get_day_in_work_percent прошло дней с начала работы в процентах 
+                }
+        else:
+            return None
 
     class Meta:
         ordering = ["order"]

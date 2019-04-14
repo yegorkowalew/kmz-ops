@@ -4,6 +4,7 @@ import logging
 from officenotes.models import OfficeNote
 from order.models import Order
 from timeworker.models import TWorker
+from graph.models import DateRange
 from datetime import datetime
 from datetime import timedelta
 from django.views.generic.detail import DetailView
@@ -80,4 +81,5 @@ class OrderDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rebild'] = TWorker.objects.last()
+        context['graph'] = DateRange.objects.filter(order__ordernum=self.object.ordernum)
         return context

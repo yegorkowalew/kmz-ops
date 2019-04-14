@@ -220,36 +220,6 @@ a.article:hover {
     padding-left: 10px;
 }
 
-.alert-success {
-    background-color: rgba(0, 255, 0, 0);
-    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 200, 0, 0.2)); */
-    border-right: 5px solid #28a745;
-}
-.alert-warning {
-    background-color: rgba(0, 255, 0, 0);
-    /* background-color: rgba(255, 255, 0, 0.1); */
-    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(179, 179, 0, 0.2)); */
-    border-right: 5px solid #ffc107;
-}
-.alert-danger {
-    background-color: rgba(0, 255, 0, 0);
-    /* background-color: rgba(255, 0, 0, 0.1); */
-    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 0, 0, 0.2)); */
-    border-right: 5px solid #dc3545;
-}
-.alert-primary {
-    background-color: rgba(0, 255, 0, 0);
-    /* background-color: rgba(0, 0, 148, 0.1); */
-    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 148, 0.2)); */
-    border-right: 5px solid #007bff;
-}
-.alert-secondary {
-    background-color: rgba(0, 255, 0, 0);
-    /* background-color: rgba(126, 126, 126, 0.1); */
-    /* background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(126, 126, 126, 0.2)); */
-    border-right: 5px solid #6c757d;
-}
-
 .customerblock {
     margin-bottom:10px;
     border: 1px solid red;
@@ -308,6 +278,9 @@ a.article:hover {
     font-size: 1.1em;
     margin-bottom: 0.1rem;
     font-weight: bold;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-left: 0.2em
 }
 
 .card .card-body {
@@ -315,4 +288,14 @@ a.article:hover {
 }
 .card p {
     margin-bottom: 0;
+    padding-left: 0.4em;
+}
+
+.peity {
+    margin-left: 15px;
+}
+
+.card i {
+    padding-left: 1em;
+    padding-bottom: 0.3em;
 }

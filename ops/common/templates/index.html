@@ -2,45 +2,39 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-<!-- <h2>Краткая сводка по производству</h2>
-<ul>
-    <li>Служебных записок: {{len_notes}}</li>
-    <li>Заказов: {{len_orders}}</li>
-    <li>Готовых заказов: {{len_ready_orders}}</li>
-</ul> -->
+{% include  'status.html' %}
 <h2>Краткая сводка</h2>
 <div class="container-fluid">
+
 <div class="row">
-  <div class="card col-4">
-    <div class="card-body">
-      <h4 class="card-title">Сводка по заказам</h4>
-      <div class="row">
-        <div class=""> <!--  style="background-color: aquamarine; width: 160px; height: 160px;" -->
-          <span class="peity-donut" data-peity='{ "fill": ["#007bff","#ffc107","#dc3545"], "height": 150, "width": 150 }'>{{len_max_ten}},{{len_min_ten}},{{len_pros}}</span>
-        </div>
-        <div class="col">
-          <ul class="card-ul">
-            <li>Заказы в работе: <a href="#" class="badge badge-primary">{{len_max_ten}}</a></li>
-            <li>Осталось меньше 10 дней: <a href="#" class="badge badge-warning">{{len_min_ten}}</a></li>
-            <li>Просроченные заказы: <a href="#" class="badge badge-danger">{{len_pros}}</a></li>
-          </ul>
+  <div class="col-sm-12 col-xl-4 col-lg-4 col-md-6" style="margin-top: 20px">
+    <div class="card mr-n3">
+      <div class="card-body">
+        <h5 class="card-title">Сводка по заказам</h5>
+        <div class="row">
+          <div class="mx-auto" style="width: 160px;"> <!--  style="background-color: aquamarine; width: 160px; height: 160px;" -->
+            <span class="peity-donut" data-peity='{ "fill": ["#007bff","#ffc107","#dc3545"], "height": 150, "width": 150 }'>{{len_max_ten}},{{len_min_ten}},{{len_pros}}</span>
+          </div>
+          <div class="col" style="min-width: 250px;">
+            <p>Заказы в работе: <a href="#" class="badge badge-primary">{{len_max_ten}}</a></p>
+            <p>Осталось меньше 10 дней: <a href="#" class="badge badge-warning">{{len_min_ten}}</a></p>
+            <p>Просроченные заказы: <a href="#" class="badge badge-danger">{{len_pros}}</a></p>
+          </div>
+
         </div>
       </div>
+      <i class="text-muted">Всего заказов: {{ len_orders }}</i>
     </div>
   </div>
-
-  <div class="card col-6">
+  <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6" style="margin-top: 20px">
+    <div class="card mr-n3">
       <div class="card-body">
-        <h4 class="card-title">Последний лог</h4>
-        <div class="row">
-          <div class="col">
-            <p>
-              {{ last_log.log_text|linebreaksbr }}
-            </p>
-          </div>
-        </div>
+        <h5 class="card-title">Последний лог</h5>
+          <p class="card-text">{{ last_log.log_text|linebreaksbr }}</p>
       </div>
+      <i class="text-muted">Обновлено: {{ last_log.date_end }} за {{ last_log.get_status }}сек.</i>
     </div>
+  </div>
 
 </div>
 </div>

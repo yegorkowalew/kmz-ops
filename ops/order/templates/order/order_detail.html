@@ -3,7 +3,8 @@
 {% block menubuttons %}
 {% endblock %}
 {% block content %}
-<h2>{% if object.ready %}<i class="fas fa-check-square text-success"></i>{% elif object.get_status < 0 %}<i class="fas fa-square text-danger"></i>{% elif object.get_status < 10 %}<i class="fas fa-caret-square-up text-warning"></i>{% elif object.get_status > 10 %}<i class="fas fa-caret-square-right text-primary"></i>{% else %}<i class="far fa-square text-info"></i>{% endif %}{% if object.product %}{{object.product}}{% endif %}</h2>
+{% include  'status.html' %}
+<h2>{% if object.ready %}<i class="fas fa-check-square text-success"></i>{% elif object.get_status < 0 %}<i class="fas fa-square text-danger"></i>{% elif object.get_status < 10 %}<i class="fas fa-caret-square-up text-warning"></i>{% elif object.get_status > 10 %}<i class="fas fa-caret-square-right text-primary"></i>{% else %}<i class="far fa-square text-info"></i>{% endif %} {% if object.product %}{{object.product}}{% endif %}</h2>
 <div class="container-fluid">
     <ul class="list-group list-group-horizontal-xl">
         <li class="list-group-item"><b>Отгрузка:</b> <span style="white-space: nowrap">{% if object.shipmentfrom %}{{ object.shipmentfrom }} &ndash; {% endif %}{{ object.shipmentto }}</span></li>
@@ -31,7 +32,7 @@
                   <p class="card-text">Факт: {% if object.firstofficenote.datereceiving %}{{ object.firstofficenote.datereceiving }}{% endif %}</p>
                   <p class="card-text">&nbsp;</p>
                   <p class="card-text">Разница: 
-                    {% if object.firstofficenote.get_expired %}
+                    {% if not object.firstofficenote.get_expired is None %}
                         {% if object.firstofficenote.get_expired >= 0 %}<span class="text-success">{{ object.firstofficenote.get_expired }}дн.</span>
                         {% else %}<span class="text-danger">{{ object.firstofficenote.get_expired }}дн.</span>
                         {% endif %}
@@ -48,7 +49,7 @@
                     <p class="card-text">Факт: {% if object.pickingfact %}{{ object.pickingfact }}{% endif %} </p>
                     <p class="card-text">Процент: {% if object.pickingpercent %}{{ object.pickingpercent }}%{% endif %} </p>
                     <p class="card-text">Разница: 
-                            {% if object.get_expired_picking %}
+                            {% if not object.get_expired_picking is None %}
                                 {% if object.get_expired_picking >= 0 %}<span class="text-success">{{ object.get_expired_picking }}дн.</span>
                                 {% else %}<span class="text-danger">{{ object.get_expired_picking }}дн.</span>
                                 {% endif %}
@@ -65,7 +66,7 @@
                         <p class="card-text">Факт: {% if object.shippingfact %}{{ object.shippingfact }}{% endif %} </p>
                         <p class="card-text">Процент: {% if object.shippingpercent %}{{ object.shippingpercent }}%{% endif %} </p>
                         <p class="card-text">Разница: 
-                                {% if object.get_expired_shipping %}
+                                {% if not object.get_expired_shipping is None %}
                                     {% if object.get_expired_shipping >= 0 %}<span class="text-success">{{ object.get_expired_shipping }}дн.</span>
                                     {% else %}<span class="text-danger">{{ object.get_expired_shipping }}дн.</span>
                                     {% endif %}
@@ -82,7 +83,7 @@
                         <p class="card-text">Факт: {% if object.engineeringfact %} {{ object.engineeringfact }}{% endif %}</p>
                         <p class="card-text">Процент: {% if object.engineeringpercent %} {{ object.engineeringpercent }}%{% endif %}</p>
                         <p class="card-text">Разница: 
-                                {% if object.get_expired_engineering %}
+                                {% if not object.get_expired_engineering is None %}
                                     {% if object.get_expired_engineering >= 0 %}<span class="text-success">{{ object.get_expired_engineering }}дн.</span>
                                     {% else %}<span class="text-danger">{{ object.get_expired_engineering }}дн.</span>
                                     {% endif %}
@@ -110,7 +111,7 @@
                         <p class="card-text">Факт: {% if object.materialfact %}{{ object.materialfact }}{% endif %}</p>
                         <p class="card-text">&nbsp;</p>
                         <p class="card-text">Разница: 
-                                {% if object.get_expired_material %}
+                                {% if not object.get_expired_material is None %}
                                     {% if object.get_expired_material >= 0 %}<span class="text-success">{{ object.get_expired_material }}дн.</span>
                                     {% else %}<span class="text-danger">{{ object.get_expired_material }}дн.</span>
                                     {% endif %}

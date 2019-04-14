@@ -171,10 +171,8 @@ class Order(models.Model):
 
     def get_expired_material(self):
         if self.materialplan and self.materialfact:
-            print((self.materialplan - self.materialfact).days)
             return (self.materialplan - self.materialfact).days
         else:
-            print(self.materialplan, ' ', self.materialfact)
             return None
 
     def get_shipmen(self):

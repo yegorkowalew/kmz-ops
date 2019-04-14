@@ -10,6 +10,7 @@
 </ul>
 {% endblock %}
 {% block content %}
+{% include  'status.html' %}
 <h2>Оперативный производственный график</h2>
 <div class="container-fluid">
     {% for order in orders %}{% ifchanged order.firstofficenote.oncustomer.name %}{% if forloop.first %}

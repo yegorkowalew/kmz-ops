@@ -40,6 +40,10 @@ class TWorker(models.Model):
     def get_absolute_url(self):
         return "/worker/%i/" % self.id
 
+    def get_status(self):
+        if self.ready:
+            return (self.date_end - self.date_start).seconds
+
     class Meta:
         ordering = ["id"]
         verbose_name = "работу"

@@ -57,6 +57,7 @@ class OfficeNote(models.Model):
 
     def get_expired(self):
         if self.datereceiving and self.datereceiving:
+            print((self.datereceiving - self.date).days)
             return (self.datereceiving - self.date).days
         else:
             return None

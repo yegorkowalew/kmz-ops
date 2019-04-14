@@ -25,6 +25,7 @@ def index(request):
     len_min_ten = all_orders.filter(ready=False).filter(shipmentto__lte=nowday).count()
 
     len_max_ten = all_orders.filter(ready=False).filter(shipmentto__gte=day_add_ten_days).count()
+    
     len_pros = all_orders.filter(ready=False).filter(shipmentto__lte=nowday).count()
     # Все заказы - 
     # Готовые - 

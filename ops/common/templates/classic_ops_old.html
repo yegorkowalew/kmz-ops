@@ -1,15 +1,5 @@
 <div class="container-fluid">
 {% for order in orders %}
-    {% ifchanged order.firstofficenote.oncustomer.name %}
-        {% if forloop.first %}
-            <div class="customerblock">
-        {% elif forloop.last %}
-            </div>
-        {% else %}
-        </div>
-        <div class="customerblock">
-        {% endif %}
-    {% endifchanged %}
     <div class="row tblrow
     {% if order.ready %}alert-success
     {% elif order.get_status < 0 %}alert-danger

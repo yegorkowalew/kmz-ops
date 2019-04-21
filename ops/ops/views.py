@@ -83,3 +83,10 @@ class OrderDetailView(DetailView):
         context['rebild'] = TWorker.objects.last()
         context['graph'] = DateRange.objects.filter(order__ordernum=self.object.ordernum)
         return context
+
+from rest_framework import viewsets
+from .serializers import  OrderSerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()

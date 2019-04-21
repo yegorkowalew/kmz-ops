@@ -43,10 +43,14 @@ INSTALLED_APPS = [
     'officenotes.apps.OfficenotesConfig',
     'customer.apps.CustomerConfig',
     'order.apps.OrderConfig',
-    'common'
+    'common',
+    'rest_framework',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# add this block below MIDDLEWARE
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'ops.urls'
 

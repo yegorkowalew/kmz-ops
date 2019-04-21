@@ -14,17 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 from .views import OfficeNoteDetailView, OrderDetailView
 
+from rest_framework.routers import DefaultRouter
+
+from .views import OrderViewSet
+router = DefaultRouter()
+router.register(r'orders', OrderViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('classic-ops/', views.classic_ops, name='classic_ops'),
-    # path('/office-note/<int:id>', OfficeNoteDetailView.as_view(), name='article-detail'),
     path('office-note/<int:pk>/', OfficeNoteDetailView.as_view(), name='article-detail'),
     path('order/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
+
+    path("", include(router.urls)),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -33,6 +33,6 @@ urlpatterns = [
     path('office-note/<int:pk>/', OfficeNoteDetailView.as_view(), name='article-detail'),
     path('order/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
 
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

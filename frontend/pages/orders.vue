@@ -9,11 +9,14 @@
       <blockquote class="blockquote">
         &#8220;First, solve the problem. Then, write the code.&#8221;
         <footer>
-          <small>
-            <em>&mdash;John Johnson</em>
-          </small>
+          <order-table></order-table>
         </footer>
       </blockquote>
     </v-flex>
   </v-layout>
 </template>
+
+<script>
+// import OrderTable from '~/components/OrderTable.vue';
+
+</script>

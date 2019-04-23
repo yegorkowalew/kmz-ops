@@ -52,6 +52,20 @@ $(document).ready(function () {
             // console.log(i);
             $(this).addClass("l-order-two");
         };
-        
     });
+
+    $(function() {
+        var mask = "cls-";
+    
+        $("div[class*=" + mask + "]").hover(function() {
+            var classes = $(this).attr("class").split(" ")
+            for (var i = 0; i < classes.length; i++) {
+                if (classes[i].indexOf(mask) !== -1) {
+                    $("."+classes[i]).toggleClass( "hover" )
+                    return;
+                }
+            }
+        });
+    });
+
 });

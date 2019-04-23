@@ -187,7 +187,7 @@ a.article:hover {
 
 #content {
     width: 100%;
-    padding: 20px;
+    padding: 2px;
     min-height: 100vh;
     transition: all 0.3s;
     position: absolute;
@@ -263,12 +263,13 @@ a.article:hover {
 
 .tblrow {
     border-bottom: 1px solid #afafaf;
+    padding: 0px 3px 0px 3px
 }
 
-.tblrow:hover {
+/* .tblrow:hover {
     background: rgba(150, 150, 150, 0.5);
     color: #212529;
-}
+} */
 
 .list-group-horizontal-xl .list-group-item {
     padding: 2px 8px 2px;
@@ -302,4 +303,51 @@ a.article:hover {
 
 .card .progress {
     margin-bottom: 5px
+}
+
+
+.container-fluid {
+    padding:0px
+}
+.lines {
+    font-family: 'Calibri', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #212529;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 50px max-content minmax(150px, 250px) minmax(300px, auto) max-content max-content min-content;
+  }
+
+.lines .status {
+    // background-color: aquamarine
+}
+.lines .date {
+    // background-color: burlywood;
+    text-align: right
+}
+.lines .customer {
+    // background-color: beige;
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+.lines .ordername {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+.lines .quantity {
+    // background-color: cadetblue;
+}
+.lines .ordernum {
+    // background-color:chocolate;
+}
+.lines .officenote {
+    white-space: nowrap
+}
+
+.hover {
+    background: rgba(185, 185, 185, 0.5);
 }

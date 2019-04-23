@@ -16,33 +16,15 @@
 {% include  'status.html' %}
 <h2>Оперативный производственный график</h2>
 <div class="container-fluid">
-    {% for order in orders %}
-    <div class="col-12 collapse show {% if order.ready %}ready{% elif order.get_status < 0 %}overdue{% elif order.get_status < 10 %}tendays{% elif order.get_status > 10 %}inwork{% else %}np{% endif %}">
-        <div class="row tblrow">
-            <div class="col-xl-3 col-lg-12">
-                <div class="row">
-                    <div class="tbl" style="width: 30px;">{% if order.ready %}<b><a href="#" class="text-success">100%</a></b>{% elif order.get_status < 0 %}<b><a href="#" class="text-danger">{{order.get_status}}</a></b>{% elif order.get_status < 10 %}<b><a href="#" class="text-warning">{{order.get_status}}</a></b>{% elif order.get_status > 10 %}<b><a href="#" class="text-primary">{{order.get_status}}</a></b>{% else %}<b><a href="#" class="text-info">Н.П.</a></b>{% endif %}</div>
-                    <div class="tbl text-right" style="width: 120px">{% if order.get_shipmen %}{{order.get_shipmen}}{% endif %}</div>
-                    <div class="tbl col" style="min-width: 250px;">{% if order.firstofficenote.oncustomer.name %}{{order.firstofficenote.oncustomer.name}}{% endif %}</div>
-                </div>
-            </div>
-            <div class="tbl col-xl-7 col-lg-12">
-                <div class="row">
-                    <div class="col"><a href="{{order.get_absolute_url}}" >{{order.product|capfirst}}</a></div>
-                    <div class="" style="width: 70px;">{% if order.quantity %}{{order.quantity|floatformat}}шт.{% endif %}</div>
-                </div>  
-            </div>
-            <div class="tbl col">
-                <div class="row">
-                    <div class="tbl text-secondary" style="width: 60px;">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
-                    <div class="col">
-                        {% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>{% endfor %}
-</div>
+    <div class="lines">{% for order in orders %}
+    <div class="tblrow status cls-{{order.firstofficenote.num}}">{% if order.ready %}<b><a href="#" class="text-success">100%</a></b>{% elif order.get_status < 0 %}<b><a href="#" class="text-danger">{{order.get_status}}</a></b>{% elif order.get_status < 10 %}<b><a href="#" class="text-warning">{{order.get_status}}</a></b>{% elif order.get_status > 10 %}<b><a href="#" class="text-primary">{{order.get_status}}</a></b>{% else %}<b><a href="#" class="text-info">Н.П.</a></b>{% endif %}</div>
+    <div class="tblrow date cls-{{order.firstofficenote.num}}">{% if order.get_shipmen %}{{order.get_shipmen}}{% endif %}</div>
+    <div class="tblrow customer cls-{{order.firstofficenote.num}}">{% if order.firstofficenote.oncustomer.name %}{{order.firstofficenote.oncustomer.name}}{% endif %}</div>
+    <div class="tblrow ordername cls-{{order.firstofficenote.num}}"><a href="{{order.get_absolute_url}}" >{{order.product|capfirst}}</a></div>
+    <div class="tblrow quantity cls-{{order.firstofficenote.num}}">{% if order.quantity %}{{order.quantity|floatformat}}шт.{% endif %}</div>
+    <div class="tblrow ordernum cls-{{order.firstofficenote.num}}">{% if order.ordernum %}<a href="#">{{order.ordernum}}</a>{% endif %}</div>
+    <div class="tblrow officenote cls-{{order.firstofficenote.num}}">{% if order.firstofficenote.num != None %}<a href="{{order.firstofficenote.get_absolute_url}}" class="text-info">{{order.firstofficenote.num}}</a>{% endif %}{% for otherofficenote in order.otherofficenote.all  %}, <a href="{{otherofficenote.get_absolute_url}}" class="text-info">{{otherofficenote.num}}</a>{% endfor %}</div>
+    {% endfor %}</div>
 </div>
 <div class="line"></div>
 {% include  'footer.html' %}

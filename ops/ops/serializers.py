@@ -8,4 +8,4 @@ from graph.models import DateRange
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ("shipmentfrom", "shipmentto", "product", "ordernum", "quantity")
+        fields = ("shipmentfrom", "shipmentto", "product", "ordernum", "quantity", "firstofficenote")

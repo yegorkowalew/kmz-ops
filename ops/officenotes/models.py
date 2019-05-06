@@ -50,7 +50,7 @@ class OfficeNote(models.Model):
         return self.num % self.id
 
     def __str__(self):
-            return '%s' % self.num
+        return '%s' % self.num
 
     def get_absolute_url(self):
         return "/office-note/%i/" % self.id

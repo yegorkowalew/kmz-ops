@@ -85,8 +85,12 @@ class OrderDetailView(DetailView):
         return context
 
 from rest_framework import viewsets
-from .serializers import  OrderSerializer
+from .serializers import  OrderSerializer, GetOrderSerializer
 
-class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = OrderSerializer
+from rest_framework import viewsets, mixins
+class DateOrdersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
     queryset = Order.objects.all()
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return OrderSerializer
+        return GetOrderSerializer

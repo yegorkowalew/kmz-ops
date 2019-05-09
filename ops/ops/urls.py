@@ -22,9 +22,10 @@ from .views import OfficeNoteDetailView, OrderDetailView
 
 from rest_framework.routers import DefaultRouter
 
-from .views import OrderViewSet
+from .views import DateOrdersViewSet
 router = DefaultRouter()
-router.register(r'orders', OrderViewSet)
+# router.register(r'orders', OrderViewSet)
+router.register(r'dateorder', DateOrdersViewSet, base_name='dateordersviewset')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
